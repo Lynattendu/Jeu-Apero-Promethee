@@ -1,2 +1,2 @@
-# Dessinez-Prom-th-e
+# Dessinez-Promethee
 jeu apero 
