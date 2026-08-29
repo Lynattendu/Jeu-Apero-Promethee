@@ -263,6 +263,33 @@ height: 100%;
 object-fit: cover;
 border-radius: 18px;
 }
+
+.carte-container {
+transition:
+opacity 0.4s ease,
+transform 0.4s ease;
+}
+
+.carte-disparait {
+opacity: 0;
+transform: scale(0.85);
+pointer-events: none;
+}
+
+.carte-vers-centre {
+transition:
+transform 0.45s ease,
+width 0.45s ease,
+height 0.45s ease;
+}
+
+.carte-grande {
+width: min(78vw, 360px) !important;
+height: auto !important;
+aspect-ratio: 2 / 3;
+margin: 25px auto !important;
+}
+
   
 </style>
 
@@ -534,36 +561,65 @@ if (flip.classList.contains("retournee")) {
 return;
 }
 
+// ÉTAPE 1 : la carte commence son retournement
 flip.classList.add("animation");
 
 setTimeout(function() {
 
-zone.innerHTML = "";
-
-const grandeCarte = document.createElement("div");
-grandeCarte.className = "carte-selectionnee";
-
-grandeCarte.innerHTML = `
-<img
-src="${devant}"
-alt="Carte ${codeFamille}-${numeroTexte}"
->
-`;
-
-zone.appendChild(grandeCarte);
+// ÉTAPE 2 : afficher le recto
+flip.classList.add("retournee");
+flip.classList.remove("animation");
 
 }, 250);
 
-};
 
-container.appendChild(flip);
-zone.appendChild(container);
+setTimeout(function() {
+
+// ÉTAPE 3 : faire disparaître les 5 autres cartes
+const toutesLesCartes =
+zone.querySelectorAll(".carte-container");
+
+toutesLesCartes.forEach(carte => {
+
+if (carte !== container) {
+carte.classList.add("carte-disparait");
+}
 
 });
 
+}, 550);
+
+
+setTimeout(function() {
+
+// ÉTAPE 4 : supprimer réellement les autres cartes
+const toutesLesCartes =
+zone.querySelectorAll(".carte-container");
+
+toutesLesCartes.forEach(carte => {
+
+if (carte !== container) {
+carte.remove();
 }
 
+});
 
+// La carte choisie commence à venir au centre
+container.classList.add("carte-vers-centre");
+
+zone.style.gridTemplateColumns = "1fr";
+
+}, 950);
+
+
+setTimeout(function() {
+
+// ÉTAPE 5 : agrandir la carte
+container.classList.add("carte-grande");
+
+}, 1050);
+
+};
   
   function retourFamilles() {
 
