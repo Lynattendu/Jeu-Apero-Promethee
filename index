@@ -1,0 +1,2410 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<TITLE>PROMÉTHÉE JEU DESSINEZ</TITLE>
+
+<style>
+.carte-container {
+width: 140px;
+height: 210px;
+display: inline-block;
+margin: 8px;
+perspective: 1000px;
+}
+
+.carte-flip {
+width: 100%;
+height: 100%;
+position: relative;
+transform-style: preserve-3d;
+transition: transform 0.7s;
+}
+
+.carte-flip.retournee {
+transform: rotateY(180deg);
+}
+
+.carte-face {
+position: absolute;
+width: 100%;
+height: 100%;
+backface-visibility: hidden;
+border-radius: 12px;
+object-fit: cover;
+}
+
+.carte-face-avant {
+transform: rotateY(180deg);
+}
+
+body {
+margin: 0;
+font-family: Arial, sans-serif;
+background:
+radial-gradient(circle at top, rgba(255, 140, 0, 0.18), transparent 35%),
+radial-gradient(circle at bottom, rgba(0, 170, 255, 0.12), transparent 40%),
+linear-gradient(180deg, #0b1020, #111827 55%, #090d18);
+color: white;
+min-height: 100vh;
+}
+
+#accueil {
+min-height: 100vh;
+box-sizing: border-box;
+padding: 50px 20px 35px;
+text-align: center;
+}
+
+#accueil h1 {
+margin: 20px 0 8px;
+font-size: clamp(32px, 9vw, 56px);
+line-height: 1.05;
+letter-spacing: 2px;
+color: #ffffff;
+text-shadow:
+0 0 8px rgba(255, 170, 40, 0.9),
+0 0 20px rgba(255, 120, 0, 0.55);
+}
+
+#accueil p {
+margin: 15px 0 35px;
+font-size: 18px;
+color: #d9e3f0;
+}
+
+.bouton-accueil {
+display: block;
+width: min(90%, 430px);
+min-height: 110px;
+margin: 18px auto;
+padding: 20px;
+border: 1px solid rgba(255,255,255,0.25);
+border-radius: 24px;
+
+background:
+linear-gradient(
+135deg,
+rgba(255, 135, 20, 0.95),
+rgba(137, 63, 255, 0.88)
+);
+
+color: white;
+font-size: 23px;
+font-weight: bold;
+letter-spacing: 0.5px;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,0.35),
+0 0 18px rgba(255,140,40,0.20);
+
+cursor: pointer;
+transition:
+transform 0.18s ease,
+box-shadow 0.18s ease;
+}
+
+.bouton-accueil:active {
+transform: scale(0.97);
+}
+
+.bouton-accueil span {
+display: block;
+margin-top: 8px;
+font-size: 14px;
+font-weight: normal;
+opacity: 0.85;
+}
+
+#solo {
+min-height: 100vh;
+box-sizing: border-box;
+padding: 30px 18px 40px;
+text-align: center;
+}
+
+#solo h1 {
+margin: 10px 0 10px;
+font-size: clamp(28px, 7vw, 46px);
+color: #ffffff;
+text-shadow:
+0 0 8px rgba(0, 200, 255, 0.35),
+0 0 18px rgba(255, 140, 0, 0.25);
+}
+
+#solo p {
+margin-bottom: 26px;
+color: #d9e3f0;
+font-size: 17px;
+}
+
+.bouton-famille {
+display: block;
+width: min(92%, 430px);
+margin: 14px auto;
+padding: 18px 20px;
+
+border: 1px solid rgba(255,255,255,0.18);
+border-radius: 20px;
+
+background:
+linear-gradient(
+135deg,
+rgba(19, 31, 57, 0.95),
+rgba(43, 21, 84, 0.92)
+);
+
+color: white;
+font-size: 21px;
+font-weight: bold;
+text-align: center;
+
+box-shadow:
+0 8px 24px rgba(0,0,0,0.32),
+0 0 14px rgba(0, 180, 255, 0.10);
+
+cursor: pointer;
+transition:
+transform 0.18s ease,
+box-shadow 0.18s ease,
+border-color 0.18s ease;
+}
+
+.bouton-famille:active {
+transform: scale(0.97);
+}
+
+.bouton-famille:hover {
+border-color: rgba(255, 166, 0, 0.45);
+box-shadow:
+0 10px 26px rgba(0,0,0,0.36),
+0 0 18px rgba(255, 140, 0, 0.18);
+}
+
+.bouton-retour {
+margin-top: 24px;
+padding: 14px 22px;
+border: none;
+border-radius: 18px;
+
+background: rgba(255,255,255,0.10);
+color: white;
+font-size: 17px;
+font-weight: bold;
+}
+
+.ecran-jeu {
+min-height: 100vh;
+box-sizing: border-box;
+padding: 30px 18px 40px;
+text-align: center;
+}
+
+.ecran-jeu h1 {
+margin: 10px 0 12px;
+font-size: clamp(28px, 7vw, 46px);
+color: white;
+text-shadow:
+0 0 8px rgba(0, 200, 255, 0.28),
+0 0 18px rgba(255, 140, 0, 0.22);
+}
+
+.ecran-jeu p {
+color: #d9e3f0;
+font-size: 17px;
+}
+
+.bouton-mode {
+display: block;
+width: min(92%, 430px);
+min-height: 82px;
+margin: 16px auto;
+padding: 18px 20px;
+
+border: 1px solid rgba(255,255,255,0.2);
+border-radius: 22px;
+
+background:
+linear-gradient(
+135deg,
+rgba(20, 41, 76, 0.96),
+rgba(75, 35, 125, 0.92)
+);
+
+color: white;
+font-size: 21px;
+font-weight: bold;
+
+box-shadow:
+0 9px 26px rgba(0,0,0,0.32),
+0 0 15px rgba(0,180,255,0.10);
+
+cursor: pointer;
+transition: transform 0.18s ease;
+}
+
+.bouton-mode:active {
+transform: scale(0.97);
+}
+
+.bouton-principal {
+display: block;
+width: min(92%, 430px);
+margin: 22px auto;
+padding: 17px 22px;
+
+border: none;
+border-radius: 22px;
+
+background:
+linear-gradient(
+135deg,
+rgba(255, 140, 20, 0.96),
+rgba(196, 67, 255, 0.90)
+);
+
+color: white;
+font-size: 19px;
+font-weight: bold;
+
+box-shadow:
+0 9px 28px rgba(0,0,0,0.35),
+0 0 18px rgba(255,140,30,0.18);
+
+cursor: pointer;
+}
+
+.bouton-principal:active {
+transform: scale(0.97);
+}
+
+#zoneCartesHasard {
+text-align: left;
+}
+#listeJoueursMulti {
+width: min(92%, 430px);
+margin: 20px auto;
+}
+
+.champ-joueur {
+display: block;
+width: 100%;
+box-sizing: border-box;
+
+margin: 12px 0;
+padding: 16px 18px;
+
+border-radius: 18px;
+border: 1px solid rgba(255,255,255,0.2);
+
+background: rgba(255,255,255,0.08);
+color: white;
+
+font-size: 18px;
+}
+
+.champ-joueur::placeholder {
+color: rgba(255,255,255,0.55);
+}
+
+#zoneCartesMulti {
+text-align: left;
+}
+
+
+
+
+</style>
+
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prométhée Jeu DESSINEZ</title>
+</head>
+
+<body>
+
+<!-- ÉCRAN D'ACCUEIL -->
+<div id="accueil">
+
+<h1>🔥 PROMÉTHÉE JEU DESSINEZ</h1>
+
+<p>Choisis ton mode de jeu</p>
+
+<button class="bouton-accueil" onclick="ouvrirRapide()">
+🏋️ JEU RAPIDE
+<span> Dessine en 30 secondes Max</span>
+</button>
+
+<button class="bouton-accueil" onclick="ouvrirMultijoueur()">
+👥 JEU APPROFONDIE
+<span>Dessine en 1 minute 30 secondes Maximum</span>
+</button>
+
+</div>
+
+
+<!-- ÉCRAN RAPIDE -->
+<div id="rapide" style="display:none;">
+
+<h1>🏋️ DESSINE RAPIDE</h1>
+
+<p>Choisis une famille</p>
+<button class="bouton-famille" onclick="ouvrirFamille('⚡ CORPS COMPLET')">
+⚡ Corps complet
+</button>
+
+<button class="bouton-famille" onclick="ouvrirFamille('🦵 JAMBES')">
+🦵 Jambes
+</button>
+
+<button class="bouton-famille" onclick="ouvrirFamille('💪 BRAS')">
+💪 Bras
+</button>
+
+<button class="bouton-famille" onclick="ouvrirFamille('🍑 FESSIERS')">
+🍑 Fessiers
+</button>
+
+<button class="bouton-famille" onclick="ouvrirFamille('🔥 ABDOS')">
+🔥 Abdos
+</button>
+
+<button class="bouton-famille" onclick="ouvrirFamille('🛡️ DOS')">
+🛡️ Dos
+</button>
+
+<button class="bouton-famille" onclick="ouvrirFamille('🌈 TOUTES LES FAMILLES')">
+🌈 Toutes les familles
+</button>
+
+<br><br>
+
+<button class="bouton-retour" onclick="retourAccueil()">
+← Retour
+</button>
+
+</div>
+<!-- ÉCRAN CHOIX ENTRAÎNEMENT -->
+<div id="choixEntrainement" class="ecran-jeu" style="display:none;">
+
+<h1 id="titreFamille"></h1>
+
+<p>Choisis ton entraînement</p>
+
+<button class="bouton-mode" onclick="ouvrirHasard()">
+🎲 ENTRAÎNEMENT HASARD
+</button>
+
+<button class="bouton-mode" onclick="ouvrirCircuit()">
+
+🔄 ENTRAÎNEMENT CIRCUIT
+
+</button>
+
+<br><br>
+
+<button class="bouton-retour" onclick="retourRapide()">
+← Retour
+</button>
+
+</div>
+
+<!-- ÉCRAN CIRCUIT -->
+<div id="circuit" class="ecran-jeu" style="display:none;">
+
+<h1>🔥 CIRCUIT</h1>
+
+<p id="titreCircuit"></p>
+
+<p>Combien d'exercices veux-tu ?</p>
+
+<button class="bouton-mode" onclick="choisirCircuit(3)">
+🔥 3 EXERCICES
+</button>
+
+<button class="bouton-mode" onclick="choisirCircuit(5)">
+⚡ 5 EXERCICES
+</button>
+
+<br><br>
+
+<button class="bouton-retour" onclick="retourChoixEntrainement()">
+← Retour
+</button>
+
+</div>
+
+<!-- ÉCRAN CARTES DU CIRCUIT -->
+<div id="cartesCircuit" style="display:none;">
+
+<h1>🔥 TON CIRCUIT</h1>
+
+<p id="infoCircuit"></p>
+
+<div id="zoneCartes"></div>
+
+<br>
+
+<button onclick="retourCircuit()">
+← Retour
+</button>
+</div>
+
+<!-- ÉCRAN EXÉCUTION DU CIRCUIT -->
+<div id="executionCircuit" style="display:none; text-align:center;">
+
+<h1>🔥 CIRCUIT EN COURS</h1>
+
+<p id="numeroExerciceCircuit"></p>
+
+<img
+id="grandeCarteCircuit"
+alt="Exercice du circuit"
+style="
+max-width:90%;
+max-height:70vh;
+border-radius:16px;
+object-fit:contain;
+"
+>
+
+<br><br>
+
+<button id="boutonExerciceSuivant" onclick="exerciceSuivantCircuit()">
+EXERCICE SUIVANT →
+</button>
+
+</div>
+
+<!-- ÉCRAN FIN DU CIRCUIT -->
+<div id="finCircuit" style="display:none; text-align:center;">
+
+<h1>🔥 CIRCUIT TERMINÉ</h1>
+
+<p id="bilanCircuit"></p>
+
+<p>Les dieux ont survécu. Et toi aussi. 😄</p>
+
+
+<button onclick="nouveauCircuit()">
+🔄 REFAIRE UN CIRCUIT
+</button>
+
+<br><br>
+
+<button onclick="terminerEntrainementCircuit()">
+✅ TERMINER L'ENTRAÎNEMENT
+</button>
+
+</div>
+<!-- ÉCRAN FIN DE L'ENTRAÎNEMENT -->
+<div id="finEntrainement" style="display:none; text-align:center;">
+
+<h1>🔥 ENTRAÎNEMENT TERMINÉ</h1>
+
+<p id="bilanEntrainement"></p>
+
+<p>Prométhée valide l’épreuve. 😄</p>
+
+<button onclick="retourAccueilDepuisFin()">
+🏠 RETOUR À L'ACCUEIL
+</button>
+
+</div>
+
+<!-- ÉCRAN ENTRAÎNEMENT HASARD -->
+<div id="hasard" class="ecran-jeu" style="display:none;">
+
+<h1>🎲 ENTRAÎNEMENT HASARD</h1>
+
+<p id="titreHasard"></p>
+
+<div id="zoneCartesHasard"></div>
+<button
+class="bouton-principal"
+id="boutonCommencerExerciceHasard"
+onclick="commencerExerciceHasard()"
+style="display:none;"
+>
+🔥 COMMENCER L'EXERCICE
+</button>
+<br>
+
+<button
+id="boutonExerciceTermineHasard"
+onclick="exerciceTermineHasard()"
+style="display:none;"
+>
+✅ EXERCICE TERMINÉ
+</button>
+
+<br><br>
+
+<button class="bouton-principal" onclick="terminerEntrainementHasard()">
+🏁 TERMINER L'ENTRAÎNEMENT
+</button>
+<br><br>
+
+<button class="bouton-retour" onclick="retourChoixDepuisHasard()">
+← Retour
+</button>
+</div>
+
+<!-- ÉCRAN FIN ENTRAÎNEMENT HASARD -->
+<div id="finHasard" style="display:none; text-align:center;">
+
+<h1>🔥 ENTRAÎNEMENT TERMINÉ</h1>
+
+<p id="bilanHasard"></p>
+
+<p>Prométhée valide l’épreuve. 😄</p>
+
+<button onclick="retourAccueilDepuisHasard()">
+🏠 RETOUR À L'ACCUEIL
+</button>
+
+</div>
+<!-- ÉCRAN EXERCICE HASARD EN GRAND -->
+<div id="executionHasard" style="display:none; text-align:center;">
+
+<h1>🔥 EXERCICE EN COURS</h1>
+
+<img
+id="grandeCarteHasard"
+alt="Exercice hasard"
+style="
+max-width:90%;
+max-height:70vh;
+border-radius:16px;
+object-fit:contain;
+"
+>
+
+<br><br>
+
+<button onclick="exerciceTermineHasard()">
+✅ EXERCICE TERMINÉ
+</button>
+
+</div>
+
+<!-- ÉCRAN CARTE SPÉCIALE EN GRAND -->
+<div id="specialeEnGrand" class="ecran-jeu" style="display:none; text-align:center;">
+
+<h1>🔥 CARTE SPÉCIALE</h1>
+
+<img
+id="grandeCarteSpeciale"
+alt="Carte spéciale"
+style="
+max-width:90%;
+max-height:70vh;
+border-radius:16px;
+object-fit:contain;
+"
+>
+
+<br><br>
+
+<button class="bouton-principal" onclick="continuerApresSpeciale()">
+➡️ CONTINUER
+</button>
+
+</div>
+
+<!-- ÉCRAN JEU À PLUSIEURS -->
+<div id="multijoueur" class="ecran-jeu" style="display:none;">
+
+<h1>👥 JEU À PLUSIEURS</h1>
+
+<p>Comment voulez-vous jouer ?</p>
+
+<button class="bouton-mode" onclick="choisirModeMulti('meme')">
+⚖️ MÊME NIVEAU
+</button>
+
+<button class="bouton-mode" onclick="choisirModeMulti('different')">
+🔥 NIVEAUX DIFFÉRENTS
+</button>
+
+<button class="bouton-retour" onclick="retourAccueilDepuisMulti()">
+← Retour
+</button>
+
+</div>
+
+<!-- ÉCRAN JOUEURS MULTI -->
+<div id="joueursMulti" class="ecran-jeu" style="display:none;">
+
+<h1>👥 LES JOUEURS</h1>
+
+<p>Entre les pseudos des participants</p>
+
+<div id="listeJoueursMulti">
+
+<input
+class="champ-joueur"
+type="text"
+placeholder="Joueur 1"
+>
+
+<input
+class="champ-joueur"
+type="text"
+placeholder="Joueur 2"
+>
+
+</div>
+
+<button class="bouton-mode" onclick="ajouterJoueurMulti()">
+➕ AJOUTER UN JOUEUR
+</button>
+
+<button class="bouton-principal" onclick="validerJoueursMulti()">
+🔥 COMMENCER LA PARTIE
+</button>
+
+<button class="bouton-retour" onclick="retourModeMulti()">
+← Retour
+</button>
+
+</div>
+
+<!-- ÉCRAN PLATEAU MULTI -->
+<div id="plateauMulti" class="ecran-jeu" style="display:none;">
+
+<h1 id="tourJoueurMulti">
+🔥 AU TOUR DE ...
+</h1>
+
+<p id="infoModeMulti"></p>
+<p
+id="niveauMulti"
+style="
+font-size:24px;
+font-weight:bold;
+min-height:32px;
+"
+></p>
+<div id="zoneCartesMulti"></div>
+<button
+id="boutonCommencerExerciceMulti"
+class="bouton-principal"
+onclick="commencerExerciceMulti()"
+style="display:none;"
+>
+🔥 COMMENCER L'EXERCICE
+</button>
+<br>
+
+<button
+class="bouton-principal"
+onclick="joueurSuivantMulti()"
+>
+➡️ JOUEUR SUIVANT
+</button>
+
+<button
+class="bouton-retour"
+onclick="finPartieMulti()"
+>
+🏁 FIN DE PARTIE
+</button>
+
+</div>
+
+<!-- ÉCRAN EXERCICE MULTI EN GRAND -->
+<div id="executionMulti" class="ecran-jeu" style="display:none; text-align:center;">
+
+<h1 id="titreExecutionMulti">🔥 EXERCICE EN COURS</h1>
+
+<div
+id="niveauExecutionMulti"
+style="
+font-size:28px;
+font-weight:bold;
+margin-bottom:18px;
+"
+></div>
+
+<img
+id="grandeCarteMulti"
+alt="Exercice multijoueur"
+style="
+max-width:90%;
+max-height:70vh;
+border-radius:16px;
+object-fit:contain;
+"
+>
+
+<br><br>
+
+<button
+class="bouton-principal"
+onclick="joueurSuivantDepuisExerciceMulti()"
+>
+➡️ JOUEUR SUIVANT
+</button>
+
+<button
+class="bouton-retour"
+onclick="finPartieMulti()"
+>
+🏁 FIN DE PARTIE
+</button>
+
+</div>
+
+<!-- ÉCRAN FIN DE PARTIE MULTI -->
+<div id="finMulti" class="ecran-jeu" style="display:none; text-align:center;">
+
+<h1>🔥 ÉPREUVE TERMINÉE</h1>
+<p
+id="bilanMulti"
+style="
+font-size:20px;
+line-height:1.6;
+margin:25px auto;
+max-width:500px;
+white-space:pre-line;
+"
+></p>
+<p
+id="phraseFinMulti"
+style="
+font-size:24px;
+font-weight:bold;
+max-width:500px;
+margin:35px auto;
+line-height:1.5;
+"
+></p>
+
+<button
+class="bouton-principal"
+onclick="retourAccueilDepuisFinMulti()"
+>
+🏠 RETOUR À L'ACCUEIL
+</button>
+
+</div>
+
+<script>
+
+function ouvrirRapide() {
+document.getElementById("accueil").style.display = "none";
+document.getElementById("rapide").style.display = "block";
+}
+
+function retourAccueil() {
+document.getElementById("rapide").style.display = "none";
+document.getElementById("accueil").style.display = "block";
+}
+
+let familleChoisie = "";
+
+function ouvrirFamille(famille) {
+familleChoisie = famille;
+
+document.getElementById("rapide").style.display = "none";
+document.getElementById("choixEntrainement").style.display = "block";
+
+document.getElementById("titreFamille").textContent = famille;
+}
+
+function retourRapide() {
+document.getElementById("choixEntrainement").style.display = "none";
+document.getElementById("rapide").style.display = "block";
+}
+
+let nombreExercicesCircuit = 0;
+
+let cartesCircuitSelectionnees = [];
+let exerciceCircuitActuel = 0;
+let debutCircuit = 0;
+
+let totalCircuits = 0;
+let totalExercices = 0;
+let totalTempsSecondes = 0;
+let carteHasardActive = false;
+let totalExercicesHasard = 0;
+let debutEntrainementHasard = 0;
+let carteHasardChoisie = "";
+let carteSpecialeRetournee = false;
+let imageCarteSpecialeChoisie = "";
+let carteSpecialeHasardRetournee = false;
+let imageCarteSpecialeHasardChoisie = "";
+let origineCarteSpeciale = "";
+let modeMultijoueur = "";
+let joueursMulti = [];
+let joueurMultiActuel = 0;
+let carteMultiActive = false;
+let carteMultiChoisie = "";
+let niveauEtoilesMulti = 0;
+let carteSpecialeMultiRetournee = false;
+let imageCarteSpecialeMultiChoisie = "";
+let exercicesParJoueur = {};
+let debutPartieMulti = 0;
+
+
+function ouvrirCircuit() {
+document.getElementById("choixEntrainement").style.display = "none";
+document.getElementById("circuit").style.display = "block";
+
+document.getElementById("titreCircuit").textContent = familleChoisie;
+}
+
+function choisirCircuit(nombre) {
+
+nombreExercicesCircuit = nombre;
+
+carteSpecialeRetournee = false;
+imageCarteSpecialeChoisie = "";
+
+document.getElementById("circuit").style.display = "none";
+document.getElementById("cartesCircuit").style.display = "block";
+
+document.getElementById("infoCircuit").textContent =
+familleChoisie + " • " + nombre + " exercices";
+
+let imageDos = "";
+
+if (familleChoisie === "⚡ CORPS COMPLET") {
+imageDos = "images/Dos/dos-corps-complet.PNG";
+}
+
+if (familleChoisie === "🦵 JAMBES") {
+imageDos = "images/Dos/dos-jambes.PNG";
+}
+
+if (familleChoisie === "💪 BRAS") {
+imageDos = "images/Dos/dos-bras.PNG";
+}
+
+if (familleChoisie === "🍑 FESSIERS") {
+imageDos = "images/Dos/dos-fessiers.PNG";
+}
+
+if (familleChoisie === "🔥 ABDOS") {
+imageDos = "images/Dos/dos-abdos.PNG";
+}
+
+if (familleChoisie === "🛡️ DOS") {
+imageDos = "images/Dos/dos-dos.PNG";
+}
+
+if (familleChoisie === "🌈 TOUTES LES FAMILLES") {
+imageDos = "images/Dos/dos-toutes-familles.PNG";
+}
+
+let zone = document.getElementById("zoneCartes");
+zone.innerHTML = "";
+
+const cartesParFamille = {
+
+"🍑 FESSIERS": [
+"images/Cartes/fessiers-01.PNG",
+"images/Cartes/fessiers-02.PNG",
+"images/Cartes/fessiers-03.PNG",
+"images/Cartes/fessiers-04.PNG",
+"images/Cartes/fessiers-05.PNG",
+"images/Cartes/fessiers-06.PNG",
+"images/Cartes/fessiers-07.PNG",
+"images/Cartes/fessiers-08.PNG",
+"images/Cartes/fessiers-09.PNG",
+"images/Cartes/fessiers-10.PNG",
+"images/Cartes/fessiers-11.PNG",
+"images/Cartes/fessiers-12.PNG"
+],
+
+"🦵 JAMBES": [
+"images/Cartes/jambes-01.PNG",
+"images/Cartes/jambes-02.PNG",
+"images/Cartes/jambes-03.PNG",
+"images/Cartes/jambes-04.PNG",
+"images/Cartes/jambes-05.PNG",
+"images/Cartes/jambes-06.PNG",
+"images/Cartes/jambes-07.PNG",
+"images/Cartes/jambes-08.PNG",
+"images/Cartes/jambes-09.PNG",
+"images/Cartes/jambes-10.PNG",
+"images/Cartes/jambes-11.PNG",
+"images/Cartes/jambes-12.PNG",
+"images/Cartes/jambes-13.PNG",
+"images/Cartes/jambes-14.PNG",
+"images/Cartes/jambes-15.PNG"
+],
+
+"💪 BRAS": [
+"images/Cartes/bras-01.PNG",
+"images/Cartes/bras-02.PNG",
+"images/Cartes/bras-03.PNG",
+"images/Cartes/bras-04.PNG",
+"images/Cartes/bras-05.PNG",
+"images/Cartes/bras-06.PNG",
+"images/Cartes/bras-07.PNG",
+"images/Cartes/bras-08.PNG",
+"images/Cartes/bras-09.PNG",
+"images/Cartes/bras-10.PNG",
+"images/Cartes/bras-11.PNG",
+"images/Cartes/bras-12.PNG",
+"images/Cartes/bras-13.PNG",
+"images/Cartes/bras-14.PNG",
+"images/Cartes/bras-15.PNG",
+"images/Cartes/bras-16.PNG",
+"images/Cartes/bras-17.PNG",
+"images/Cartes/bras-18.PNG",
+"images/Cartes/bras-19.PNG",
+"images/Cartes/bras-20.PNG",
+"images/Cartes/bras-21.PNG"
+
+],
+
+"🔥 ABDOS": [
+"images/Cartes/abdos-01.PNG",
+"images/Cartes/abdos-02.PNG",
+"images/Cartes/abdos-03.PNG",
+"images/Cartes/abdos-04.PNG",
+"images/Cartes/abdos-05.PNG",
+"images/Cartes/abdos-06.PNG",
+"images/Cartes/abdos-07.PNG",
+"images/Cartes/abdos-08.PNG",
+"images/Cartes/abdos-09.PNG",
+"images/Cartes/abdos-10.PNG",
+"images/Cartes/abdos-11.PNG",
+"images/Cartes/abdos-12.PNG",
+"images/Cartes/abdos-13.PNG",
+"images/Cartes/abdos-14.PNG",
+"images/Cartes/abdos-15.PNG",
+"images/Cartes/abdos-16.PNG",
+"images/Cartes/abdos-17.PNG",
+"images/Cartes/abdos-18.PNG",
+"images/Cartes/abdos-19.PNG",
+"images/Cartes/abdos-20.PNG",
+"images/Cartes/abdos-21.PNG",
+"images/Cartes/abdos-22.PNG",
+"images/Cartes/abdos-23.PNG",
+"images/Cartes/abdos-24.PNG",
+"images/Cartes/abdos-25.PNG",
+"images/Cartes/abdos-26.PNG",
+"images/Cartes/abdos-27.PNG",
+"images/Cartes/abdos-28.PNG",
+"images/Cartes/abdos-29.PNG"
+],
+
+"🛡️ DOS": [
+"images/Cartes/dos-01.PNG",
+"images/Cartes/dos-02.PNG",
+"images/Cartes/dos-03.PNG",
+"images/Cartes/dos-04.PNG",
+"images/Cartes/dos-05.PNG",
+"images/Cartes/dos-06.PNG",
+"images/Cartes/dos-07.PNG",
+"images/Cartes/dos-08.PNG",
+"images/Cartes/dos-09.PNG",
+"images/Cartes/dos-10.PNG",
+"images/Cartes/dos-11.PNG",
+"images/Cartes/dos-12.PNG",
+"images/Cartes/dos-13.PNG",
+"images/Cartes/dos-14.PNG",
+"images/Cartes/dos-15.PNG",
+"images/Cartes/dos-16.PNG",
+"images/Cartes/dos-17.PNG",
+"images/Cartes/dos-18.PNG",
+"images/Cartes/dos-19.PNG",
+"images/Cartes/dos-20.PNG"
+],
+
+"⚡ CORPS COMPLET": [
+"images/Cartes/corps-complet-01.jpg",
+"images/Cartes/corps-complet-02.PNG",
+"images/Cartes/corps-complet-03.jpg",
+"images/Cartes/corps-complet-04.jpg",
+"images/Cartes/corps-complet-05.jpg",
+"images/Cartes/corps-complet-06.jpg",
+"images/Cartes/corps-complet-07.jpg",
+"images/Cartes/corps-complet-08.jpg",
+"images/Cartes/corps-complet-09.jpg",
+"images/Cartes/corps-complet-10.jpg",
+"images/Cartes/corps-complet-11.jpg",
+"images/Cartes/corps-complet-12.PNG",
+"images/Cartes/corps-complet-13.PNG",
+"images/Cartes/corps-complet-14.PNG",
+"images/Cartes/corps-complet-15.PNG",
+"images/Cartes/corps-complet-16.PNG",
+"images/Cartes/corps-complet-17.PNG",
+"images/Cartes/corps-complet-18.PNG",
+"images/Cartes/corps-complet-19.PNG",
+"images/Cartes/corps-complet-20.PNG",
+"images/Cartes/corps-complet-21.PNG",
+"images/Cartes/corps-complet-22.PNG",
+"images/Cartes/corps-complet-23.PNG",
+"images/Cartes/corps-complet-24.PNG",
+"images/Cartes/corps-complet-25.PNG",
+"images/Cartes/corps-complet-26.PNG",
+"images/Cartes/corps-complet-27.PNG",
+"images/Cartes/corps-complet-28.PNG",
+"images/Cartes/corps-complet-29.PNG",
+"images/Cartes/corps-complet-30.PNG",
+"images/Cartes/corps-complet-31.PNG",
+"images/Cartes/corps-complet-32.PNG"
+]
+};
+
+let cartesDisponibles = [];
+
+if (familleChoisie === "🌈 TOUTES LES FAMILLES") {
+
+cartesDisponibles = Object.values(cartesParFamille).flat();
+
+} else {
+
+cartesDisponibles = [...cartesParFamille[familleChoisie]];
+
+}
+
+cartesDisponibles.sort(() => Math.random() - 0.5);
+cartesCircuitSelectionnees = cartesDisponibles.slice(0, nombre);
+
+for (let i = 0; i < nombre; i++) {
+
+let container = document.createElement("div");
+container.className = "carte-container";
+
+let flip = document.createElement("div");
+flip.className = "carte-flip";
+
+let dos = document.createElement("img");
+dos.src = imageDos;
+dos.className = "carte-face";
+dos.alt = "Dos de carte";
+
+let avant = document.createElement("img");
+avant.className = "carte-face carte-face-avant";
+avant.alt = "Carte exercice";
+
+avant.src = cartesCircuitSelectionnees[i];
+
+// On place le dos et la face dans la carte
+flip.appendChild(dos);
+flip.appendChild(avant);
+
+// On place la carte dans son emplacement
+container.appendChild(flip);
+
+// Quand on touche la carte, elle se retourne
+container.onclick = function() {
+
+if (!flip.classList.contains("retournee")) {
+flip.classList.add("retournee");
+
+}
+
+};
+
+// On affiche la carte
+zone.appendChild(container);
+}
+// ----- CARTE SPÉCIALE FACULTATIVE -----
+
+let titreSpeciale = document.createElement("h2");
+titreSpeciale.textContent = "🔥 Tu veux défier les dieux ?";
+titreSpeciale.style.marginTop = "30px";
+
+let texteSpeciale = document.createElement("p");
+texteSpeciale.textContent = "La carte spéciale est facultative.";
+
+zone.appendChild(titreSpeciale);
+zone.appendChild(texteSpeciale);
+
+
+// Choisir une carte spéciale au hasard entre 01 et 30
+
+const cartesSpecialesRapide = [
+"02", "03", "04", "07",
+"09", "10", "12", "14",
+"16", "19", "20", "22",
+"24", "26"
+];
+
+let numeroSpeciale =
+cartesSpecialesRapide[
+Math.floor(Math.random() * cartesSpecialesRapide.length)
+];
+
+let imageSpeciale =
+"images/Cartes/Speciales/speciales-" +
+numeroSpeciale +
+".PNG";
+
+
+// Créer la carte spéciale
+
+let containerSpeciale = document.createElement("div");
+containerSpeciale.className = "carte-container";
+
+let flipSpeciale = document.createElement("div");
+flipSpeciale.className = "carte-flip";
+
+
+// Dos de la carte spéciale
+
+let dosSpeciale = document.createElement("img");
+dosSpeciale.src = "images/Dos/dos-speciales.PNG";
+dosSpeciale.className = "carte-face";
+dosSpeciale.alt = "Dos de carte spéciale";
+
+
+// Face de la carte spéciale
+
+let avantSpeciale = document.createElement("img");
+avantSpeciale.src = imageSpeciale;
+avantSpeciale.className = "carte-face carte-face-avant";
+avantSpeciale.alt = "Carte spéciale";
+
+
+// Construire la carte
+
+flipSpeciale.appendChild(dosSpeciale);
+flipSpeciale.appendChild(avantSpeciale);
+
+containerSpeciale.appendChild(flipSpeciale);
+
+
+// Retournement au toucher
+
+containerSpeciale.onclick = function() {
+
+if (!flipSpeciale.classList.contains("retournee")) {
+
+flipSpeciale.classList.add("retournee");
+
+carteSpecialeRetournee = true;
+imageCarteSpecialeChoisie = imageSpeciale;
+
+}
+
+};
+
+
+// Afficher la carte
+
+zone.appendChild(containerSpeciale);
+let boutonCommencer = document.createElement("button");
+
+boutonCommencer.textContent = "🔥 COMMENCER LE CIRCUIT";
+
+boutonCommencer.style.display = "block";
+boutonCommencer.style.margin = "30px auto";
+boutonCommencer.style.padding = "15px 25px";
+boutonCommencer.style.fontSize = "18px";
+
+boutonCommencer.onclick = commencerCircuit;
+
+zone.appendChild(boutonCommencer);
+
+}
+
+function retourChoixEntrainement() {
+document.getElementById("circuit").style.display = "none";
+document.getElementById("choixEntrainement").style.display = "block";
+}
+
+function retourCircuit() {
+document.getElementById("cartesCircuit").style.display = "none";
+document.getElementById("circuit").style.display = "block";
+}
+
+function commencerCircuit() {
+origineCarteSpeciale = "circuit";
+
+exerciceCircuitActuel = 0;
+
+debutCircuit = Date.now();
+
+document.getElementById("cartesCircuit").style.display = "none";
+
+if (carteSpecialeRetournee) {
+
+document.getElementById("grandeCarteSpeciale").src =
+imageCarteSpecialeChoisie;
+
+document.getElementById("specialeEnGrand").style.display = "block";
+
+} else {
+
+document.getElementById("executionCircuit").style.display = "block";
+
+afficherExerciceCircuit();
+
+}
+}
+
+
+function afficherExerciceCircuit() {
+
+let carte = cartesCircuitSelectionnees[exerciceCircuitActuel];
+
+document.getElementById("grandeCarteCircuit").src = carte;
+
+document.getElementById("numeroExerciceCircuit").textContent =
+"Exercice " +
+(exerciceCircuitActuel + 1) +
+" / " +
+cartesCircuitSelectionnees.length;
+
+let bouton = document.getElementById("boutonExerciceSuivant");
+
+if (
+exerciceCircuitActuel ===
+cartesCircuitSelectionnees.length - 1
+) {
+
+bouton.textContent = "🔥 TERMINER LE CIRCUIT";
+
+} else {
+
+bouton.textContent = "EXERCICE SUIVANT →";
+
+}
+}
+
+
+function exerciceSuivantCircuit() {
+
+if (
+exerciceCircuitActuel <
+cartesCircuitSelectionnees.length - 1
+) {
+
+exerciceCircuitActuel++;
+
+afficherExerciceCircuit();
+
+} else {
+
+let finCircuitTemps = Date.now();
+let dureeTotale = Math.floor((finCircuitTemps - debutCircuit) / 1000);
+totalCircuits++;
+
+totalExercices += cartesCircuitSelectionnees.length;
+
+totalTempsSecondes += dureeTotale;
+
+let minutes = Math.floor(dureeTotale / 60);
+let secondes = dureeTotale % 60;
+
+let texteTemps = "";
+
+if (minutes > 0) {
+texteTemps = minutes + " min " + secondes + " s";
+} else {
+texteTemps = secondes + " s";
+}
+
+document.getElementById("bilanCircuit").textContent =
+cartesCircuitSelectionnees.length +
+" exercices réalisés • ⏱️ " +
+texteTemps;
+
+document.getElementById("executionCircuit").style.display = "none";
+document.getElementById("finCircuit").style.display = "block";
+
+}
+}
+
+
+
+function terminerEntrainementCircuit() {
+
+let minutesTotal = Math.floor(totalTempsSecondes / 60);
+let secondesTotal = totalTempsSecondes % 60;
+
+let texteTempsTotal = "";
+
+if (minutesTotal > 0) {
+texteTempsTotal = minutesTotal + " min " + secondesTotal + " s";
+} else {
+texteTempsTotal = secondesTotal + " s";
+}
+
+document.getElementById("bilanEntrainement").textContent =
+totalCircuits +
+" circuit(s) réalisé(s) • " +
+totalExercices +
+" exercices réalisés • ⏱️ " +
+texteTempsTotal;
+
+document.getElementById("finCircuit").style.display = "none";
+document.getElementById("finEntrainement").style.display = "block";
+
+}function nouveauCircuit() {
+
+document.getElementById("finCircuit").style.display = "none";
+document.getElementById("circuit").style.display = "block";
+
+}
+function retourAccueilDepuisFin() {
+
+// Remettre les compteurs de séance à zéro
+totalCircuits = 0;
+totalExercices = 0;
+totalTempsSecondes = 0;
+
+cartesCircuitSelectionnees = [];
+exerciceCircuitActuel = 0;
+debutCircuit = 0;
+
+// Fermer l'écran de fin
+document.getElementById("finEntrainement").style.display = "none";
+
+// Revenir à l'accueil
+document.getElementById("accueil").style.display = "block";
+
+}
+
+function ouvrirHasard() {
+carteSpecialeHasardRetournee = false;
+imageCarteSpecialeHasardChoisie = "";
+carteHasardActive = false;
+document.getElementById("boutonExerciceTermineHasard").style.display = "none";
+document.getElementById("choixEntrainement").style.display = "none";
+document.getElementById("hasard").style.display = "block";
+
+document.getElementById("titreHasard").textContent = familleChoisie;
+
+let imageDosHasard = "";
+
+if (familleChoisie === "⚡ CORPS COMPLET") {
+imageDosHasard = "images/Dos/dos-corps-complet.PNG";
+}
+
+if (familleChoisie === "🦵 JAMBES") {
+imageDosHasard = "images/Dos/dos-jambes.PNG";
+}
+
+if (familleChoisie === "💪 BRAS") {
+imageDosHasard = "images/Dos/dos-bras.PNG";
+}
+
+if (familleChoisie === "🍑 FESSIERS") {
+imageDosHasard = "images/Dos/dos-fessiers.PNG";
+}
+
+if (familleChoisie === "🔥 ABDOS") {
+imageDosHasard = "images/Dos/dos-abdos.PNG";
+}
+
+if (familleChoisie === "🛡️ DOS") {
+imageDosHasard = "images/Dos/dos-dos.PNG";
+}
+
+if (familleChoisie === "🌈 TOUTES LES FAMILLES") {
+imageDosHasard = "images/Dos/dos-toutes-familles.PNG";
+}
+
+let zone = document.getElementById("zoneCartesHasard");
+
+zone.innerHTML = "";
+
+const cartesParFamilleHasard = {
+
+"🍑 FESSIERS": [
+"images/Cartes/fessiers-01.PNG",
+"images/Cartes/fessiers-02.PNG",
+"images/Cartes/fessiers-03.PNG",
+"images/Cartes/fessiers-04.PNG",
+"images/Cartes/fessiers-05.PNG",
+"images/Cartes/fessiers-06.PNG",
+"images/Cartes/fessiers-07.PNG",
+"images/Cartes/fessiers-08.PNG",
+"images/Cartes/fessiers-09.PNG",
+"images/Cartes/fessiers-10.PNG",
+"images/Cartes/fessiers-11.PNG",
+"images/Cartes/fessiers-12.PNG"
+],
+
+"🦵 JAMBES": [
+"images/Cartes/jambes-01.PNG",
+"images/Cartes/jambes-02.PNG",
+"images/Cartes/jambes-03.PNG",
+"images/Cartes/jambes-04.PNG",
+"images/Cartes/jambes-05.PNG",
+"images/Cartes/jambes-06.PNG",
+"images/Cartes/jambes-07.PNG",
+"images/Cartes/jambes-08.PNG",
+"images/Cartes/jambes-09.PNG",
+"images/Cartes/jambes-10.PNG",
+"images/Cartes/jambes-11.PNG",
+"images/Cartes/jambes-12.PNG",
+"images/Cartes/jambes-13.PNG",
+"images/Cartes/jambes-14.PNG",
+"images/Cartes/jambes-15.PNG"
+],
+
+"💪 BRAS": [
+"images/Cartes/bras-01.PNG",
+"images/Cartes/bras-02.PNG",
+"images/Cartes/bras-03.PNG",
+"images/Cartes/bras-04.PNG",
+"images/Cartes/bras-05.PNG",
+"images/Cartes/bras-06.PNG",
+"images/Cartes/bras-07.PNG",
+"images/Cartes/bras-08.PNG",
+"images/Cartes/bras-09.PNG",
+"images/Cartes/bras-10.PNG",
+"images/Cartes/bras-11.PNG",
+"images/Cartes/bras-12.PNG",
+"images/Cartes/bras-13.PNG",
+"images/Cartes/bras-14.PNG",
+"images/Cartes/bras-15.PNG",
+"images/Cartes/bras-16.PNG",
+"images/Cartes/bras-17.PNG",
+"images/Cartes/bras-18.PNG",
+"images/Cartes/bras-19.PNG",
+"images/Cartes/bras-20.PNG",
+"images/Cartes/bras-21.PNG"
+
+],
+
+"🔥 ABDOS": [
+"images/Cartes/abdos-01.PNG",
+"images/Cartes/abdos-02.PNG",
+"images/Cartes/abdos-03.PNG",
+"images/Cartes/abdos-04.PNG",
+"images/Cartes/abdos-05.PNG",
+"images/Cartes/abdos-06.PNG",
+"images/Cartes/abdos-07.PNG",
+"images/Cartes/abdos-08.PNG",
+"images/Cartes/abdos-09.PNG",
+"images/Cartes/abdos-10.PNG",
+"images/Cartes/abdos-11.PNG",
+"images/Cartes/abdos-12.PNG",
+"images/Cartes/abdos-13.PNG",
+"images/Cartes/abdos-14.PNG",
+"images/Cartes/abdos-15.PNG",
+"images/Cartes/abdos-16.PNG",
+"images/Cartes/abdos-17.PNG",
+"images/Cartes/abdos-18.PNG",
+"images/Cartes/abdos-19.PNG",
+"images/Cartes/abdos-20.PNG",
+"images/Cartes/abdos-21.PNG",
+"images/Cartes/abdos-22.PNG",
+"images/Cartes/abdos-23.PNG",
+"images/Cartes/abdos-24.PNG",
+"images/Cartes/abdos-25.PNG",
+"images/Cartes/abdos-26.PNG",
+"images/Cartes/abdos-27.PNG",
+"images/Cartes/abdos-28.PNG",
+"images/Cartes/abdos-29.PNG"
+],
+
+"🛡️ DOS": [
+"images/Cartes/dos-01.PNG",
+"images/Cartes/dos-02.PNG",
+"images/Cartes/dos-03.PNG",
+"images/Cartes/dos-04.PNG",
+"images/Cartes/dos-05.PNG",
+"images/Cartes/dos-06.PNG",
+"images/Cartes/dos-07.PNG",
+"images/Cartes/dos-08.PNG",
+"images/Cartes/dos-09.PNG",
+"images/Cartes/dos-10.PNG",
+"images/Cartes/dos-11.PNG",
+"images/Cartes/dos-12.PNG",
+"images/Cartes/dos-13.PNG",
+"images/Cartes/dos-14.PNG",
+"images/Cartes/dos-15.PNG",
+"images/Cartes/dos-16.PNG",
+"images/Cartes/dos-17.PNG",
+"images/Cartes/dos-18.PNG",
+"images/Cartes/dos-19.PNG",
+"images/Cartes/dos-20.PNG"
+],
+
+"⚡ CORPS COMPLET": [
+"images/Cartes/corps-complet-01.jpg",
+"images/Cartes/corps-complet-02.PNG",
+"images/Cartes/corps-complet-03.jpg",
+"images/Cartes/corps-complet-04.jpg",
+"images/Cartes/corps-complet-05.jpg",
+"images/Cartes/corps-complet-06.jpg",
+"images/Cartes/corps-complet-07.jpg",
+"images/Cartes/corps-complet-08.jpg",
+"images/Cartes/corps-complet-09.jpg",
+"images/Cartes/corps-complet-10.jpg",
+"images/Cartes/corps-complet-11.jpg",
+"images/Cartes/corps-complet-12.PNG",
+"images/Cartes/corps-complet-13.PNG",
+"images/Cartes/corps-complet-14.PNG",
+"images/Cartes/corps-complet-15.PNG",
+"images/Cartes/corps-complet-16.PNG",
+"images/Cartes/corps-complet-17.PNG",
+"images/Cartes/corps-complet-18.PNG",
+"images/Cartes/corps-complet-19.PNG",
+"images/Cartes/corps-complet-20.PNG",
+"images/Cartes/corps-complet-21.PNG",
+"images/Cartes/corps-complet-22.PNG",
+"images/Cartes/corps-complet-23.PNG",
+"images/Cartes/corps-complet-24.PNG",
+"images/Cartes/corps-complet-25.PNG",
+"images/Cartes/corps-complet-26.PNG",
+"images/Cartes/corps-complet-27.PNG",
+"images/Cartes/corps-complet-28.PNG",
+"images/Cartes/corps-complet-29.PNG",
+"images/Cartes/corps-complet-30.PNG",
+"images/Cartes/corps-complet-31.PNG",
+"images/Cartes/corps-complet-32.PNG"
+]
+};
+
+let cartesDisponiblesHasard = [];
+
+if (familleChoisie === "🌈 TOUTES LES FAMILLES") {
+
+cartesDisponiblesHasard =
+Object.values(cartesParFamilleHasard).flat();
+
+} else {
+
+cartesDisponiblesHasard =
+[...cartesParFamilleHasard[familleChoisie]];
+
+}
+
+cartesDisponiblesHasard.sort(() => Math.random() - 0.5);
+
+
+for (let i = 0; i < 6; i++) {
+
+let container = document.createElement("div");
+container.className = "carte-container";
+
+let flip = document.createElement("div");
+flip.className = "carte-flip";
+
+let dos = document.createElement("img");
+dos.src = imageDosHasard;
+dos.className = "carte-face";
+
+let avant = document.createElement("img");
+avant.className = "carte-face carte-face-avant";
+avant.src = cartesDisponiblesHasard[i];
+
+flip.appendChild(dos);
+flip.appendChild(avant);
+
+container.appendChild(flip);
+
+container.onclick = function() {
+
+if (carteHasardActive) {
+return;
+}
+
+if (!flip.classList.contains("retournee")) {
+
+carteHasardActive = true;
+carteHasardChoisie = cartesDisponiblesHasard[i];
+if (debutEntrainementHasard === 0) {
+debutEntrainementHasard = Date.now();
+}
+flip.classList.add("retournee");
+document.getElementById("boutonCommencerExerciceHasard").style.display = "inline-block";
+
+
+}
+};
+
+zone.appendChild(container);
+}
+
+
+// ICI seulement commence la carte spéciale
+
+let titreSpecialeHasard = document.createElement("h2");
+titreSpecialeHasard.textContent = "🔥 Tu veux défier les dieux ?";
+
+let texteSpecialeHasard = document.createElement("p");
+texteSpecialeHasard.textContent = "La carte spéciale est facultative.";
+
+zone.appendChild(titreSpecialeHasard);
+zone.appendChild(texteSpecialeHasard);
+
+const cartesSpecialesSoloHasard = [
+"02", "03", "04", "07",
+"09", "10", "12", "14",
+"16", "19", "20", "22",
+"24", "26"
+];
+
+let numeroSpecialeHasard =
+cartesSpecialesRapideHasard[
+Math.floor(Math.random() * cartesSpecialesRapideHasard.length)
+];
+
+let imageSpecialeHasard =
+"images/Cartes/Speciales/speciales-" +
+numeroSpecialeHasard +
+".PNG";
+
+let containerSpecialeHasard = document.createElement("div");
+containerSpecialeHasard.className = "carte-container";
+
+let flipSpecialeHasard = document.createElement("div");
+flipSpecialeHasard.className = "carte-flip";
+
+let dosSpecialeHasard = document.createElement("img");
+dosSpecialeHasard.src = "images/Dos/dos-speciales.PNG";
+dosSpecialeHasard.className = "carte-face";
+
+let avantSpecialeHasard = document.createElement("img");
+avantSpecialeHasard.src = imageSpecialeHasard;
+avantSpecialeHasard.className = "carte-face carte-face-avant";
+
+flipSpecialeHasard.appendChild(dosSpecialeHasard);
+flipSpecialeHasard.appendChild(avantSpecialeHasard);
+
+containerSpecialeHasard.appendChild(flipSpecialeHasard);
+
+containerSpecialeHasard.onclick = function() {
+
+if (!flipSpecialeHasard.classList.contains("retournee")) {
+
+flipSpecialeHasard.classList.add("retournee");
+
+carteSpecialeHasardRetournee = true;
+imageCarteSpecialeHasardChoisie = imageSpecialeHasard;
+
+}
+
+};
+
+zone.appendChild(containerSpecialeHasard);
+
+}
+
+function retourChoixDepuisHasard() {
+
+document.getElementById("hasard").style.display = "none";
+document.getElementById("choixEntrainement").style.display = "block";
+
+}
+
+function exerciceTermineHasard() {
+
+totalExercicesHasard++;
+
+carteHasardActive = false;
+carteHasardChoisie = "";
+
+document.getElementById("executionHasard").style.display = "none";
+
+document.getElementById("boutonCommencerExerciceHasard").style.display = "none";
+
+ouvrirHasard();
+}
+function terminerEntrainementHasard() {
+
+let finHasard = Date.now();
+
+let dureeTotaleHasard = 0;
+
+if (debutEntrainementHasard > 0) {
+dureeTotaleHasard = Math.floor(
+(finHasard - debutEntrainementHasard) / 1000
+);
+}
+
+let minutes = Math.floor(dureeTotaleHasard / 60);
+let secondes = dureeTotaleHasard % 60;
+
+let texteTemps = "";
+
+if (minutes > 0) {
+texteTemps = minutes + " min " + secondes + " s";
+} else {
+texteTemps = secondes + " s";
+}
+
+document.getElementById("bilanHasard").textContent =
+totalExercicesHasard +
+" exercices réalisés • ⏱️ " +
+texteTemps;
+
+document.getElementById("hasard").style.display = "none";
+document.getElementById("finHasard").style.display = "block";
+}
+
+
+function retourAccueilDepuisHasard() {
+
+totalExercicesHasard = 0;
+debutEntrainementHasard = 0;
+carteHasardActive = false;
+
+document.getElementById("finHasard").style.display = "none";
+document.getElementById("accueil").style.display = "block";
+
+}
+
+function commencerExerciceHasard() {
+origineCarteSpeciale = "hasard";
+
+document.getElementById("hasard").style.display = "none";
+
+if (carteSpecialeHasardRetournee) {
+
+document.getElementById("grandeCarteSpeciale").src =
+imageCarteSpecialeHasardChoisie;
+
+document.getElementById("specialeEnGrand").style.display = "block";
+
+} else {
+
+document.getElementById("grandeCarteHasard").src =
+carteHasardChoisie;
+
+document.getElementById("executionHasard").style.display = "block";
+
+}
+
+}
+
+function continuerApresSpeciale() {
+
+document.getElementById("specialeEnGrand").style.display = "none";
+
+if (origineCarteSpeciale === "circuit") {
+
+document.getElementById("executionCircuit").style.display = "block";
+
+afficherExerciceCircuit();
+
+}
+
+if (origineCarteSpeciale === "hasard") {
+
+document.getElementById("grandeCarteHasard").src =
+carteHasardChoisie;
+
+document.getElementById("executionHasard").style.display = "block";
+
+}
+if (origineCarteSpeciale === "multi") {
+
+afficherExerciceMultiEnGrand();
+
+}
+
+
+}
+
+function ouvrirMultijoueur() {
+
+document.getElementById("accueil").style.display = "none";
+document.getElementById("multijoueur").style.display = "block";
+
+}
+
+
+function choisirModeMulti(mode) {
+
+modeMultijoueur = mode;
+
+document.getElementById("multijoueur").style.display = "none";
+document.getElementById("joueursMulti").style.display = "block";
+
+}
+
+
+
+function retourAccueilDepuisMulti() {
+
+document.getElementById("multijoueur").style.display = "none";
+document.getElementById("accueil").style.display = "block";
+
+}
+
+function ajouterJoueurMulti() {
+
+let liste = document.getElementById("listeJoueursMulti");
+
+let nombre = liste.querySelectorAll(".champ-joueur").length + 1;
+
+let input = document.createElement("input");
+
+input.className = "champ-joueur";
+input.type = "text";
+input.placeholder = "Joueur " + nombre;
+
+liste.appendChild(input);
+}
+
+
+function validerJoueursMulti() {
+
+let champs = document.querySelectorAll(".champ-joueur");
+
+joueursMulti = [];
+
+champs.forEach(function(champ) {
+
+let pseudo = champ.value.trim();
+
+if (pseudo !== "") {
+joueursMulti.push(pseudo);
+}
+
+});
+
+if (joueursMulti.length < 2) {
+
+alert("Il faut au moins 2 joueurs.");
+
+return;
+}
+
+joueurMultiActuel = 0;
+exercicesParJoueur = {};
+
+joueursMulti.forEach(function(joueur) {
+exercicesParJoueur[joueur] = 0;
+});
+
+debutPartieMulti = Date.now();
+
+document.getElementById("joueursMulti").style.display = "none";
+document.getElementById("plateauMulti").style.display = "block";
+
+afficherTourMulti();
+
+}
+
+
+function retourModeMulti() {
+
+document.getElementById("joueursMulti").style.display = "none";
+document.getElementById("multijoueur").style.display = "block";
+
+joueursMulti = [];
+joueurMultiActuel = 0;
+
+let liste = document.getElementById("listeJoueursMulti");
+
+liste.innerHTML = `
+<input
+class="champ-joueur"
+type="text"
+placeholder="Joueur 1"
+>
+
+<input
+class="champ-joueur"
+type="text"
+placeholder="Joueur 2"
+>
+`;
+}
+
+function afficherTourMulti() {
+
+let pseudo = joueursMulti[joueurMultiActuel];
+
+document.getElementById("tourJoueurMulti").textContent =
+"🔥 AU TOUR DE " + pseudo.toUpperCase();
+
+if (modeMultijoueur === "meme") {
+
+document.getElementById("infoModeMulti").textContent =
+"⚖️ Même niveau";
+
+}
+
+if (modeMultijoueur === "different") {
+
+document.getElementById("infoModeMulti").textContent =
+"🔥 Niveaux différents";
+
+}
+creerCartesMulti();
+}
+
+function joueurSuivantMulti() {
+
+joueurMultiActuel++;
+
+if (joueurMultiActuel >= joueursMulti.length) {
+joueurMultiActuel = 0;
+}
+
+afficherTourMulti();
+
+}
+
+function finPartieMulti() {
+
+document.getElementById("plateauMulti").style.display = "none";
+document.getElementById("executionMulti").style.display = "none";
+document.getElementById("specialeEnGrand").style.display = "none";
+
+const phrasesFin = [
+"🔥 Prométhée valide votre épreuve.",
+"⚡ Les dieux réclament déjà une revanche.",
+"💪 Vous êtes venus jouer. Vous repartez plus forts.",
+"🏛️ L’Olympe vous accorde une pause… pour l’instant.",
+"💧 Belle partie. Maintenant, hydratez-vous, héros. 😄",
+"🔥 Les flammes de Prométhée brûlent encore. Belle épreuve !",
+"⚔️ Mission accomplie. L’Olympe se souviendra de votre passage.",
+"🌟 Les dieux vous regardaient. Ils sont plutôt impressionnés."
+];
+
+let phrase =
+phrasesFin[Math.floor(Math.random() * phrasesFin.length)];
+
+document.getElementById("phraseFinMulti").textContent = phrase;
+let lignesBilan = [];
+
+for (let joueur of joueursMulti) {
+
+let nombre = exercicesParJoueur[joueur] || 0;
+
+lignesBilan.push(
+joueur + " — " + nombre + " exercice" + (nombre > 1 ? "s" : "")
+);
+
+}
+
+let tempsTotalSecondes = 0;
+
+if (debutPartieMulti > 0) {
+tempsTotalSecondes =
+Math.floor((Date.now() - debutPartieMulti) / 1000);
+}
+
+let minutes = Math.floor(tempsTotalSecondes / 60);
+let secondes = tempsTotalSecondes % 60;
+
+let texteTemps = "";
+
+if (minutes > 0) {
+texteTemps = minutes + " min " + secondes + " s";
+} else {
+texteTemps = secondes + " s";
+}
+
+document.getElementById("bilanMulti").textContent =
+lignesBilan.join("\n") +
+"\n\n⏱️ Temps total : " +
+texteTemps;
+document.getElementById("finMulti").style.display = "block";
+
+}
+
+function retourAccueilDepuisFinMulti() {
+
+document.getElementById("finMulti").style.display = "none";
+document.getElementById("accueil").style.display = "block";
+
+modeMultijoueur = "";
+joueursMulti = [];
+joueurMultiActuel = 0;
+
+carteMultiActive = false;
+carteMultiChoisie = "";
+
+niveauEtoilesMulti = 0;
+
+carteSpecialeMultiRetournee = false;
+imageCarteSpecialeMultiChoisie = "";
+
+}
+
+function creerCartesMulti() {
+
+carteMultiActive = false;
+carteMultiChoisie = "";
+document.getElementById("boutonCommencerExerciceMulti").style.display = "none";
+carteSpecialeMultiRetournee = false;
+imageCarteSpecialeMultiChoisie = "";
+
+niveauEtoilesMulti = 0;
+
+let zone = document.getElementById("zoneCartesMulti");
+document.getElementById("niveauMulti").textContent = "";
+
+zone.innerHTML = "";
+
+// Toutes les cartes exercices réunies
+let cartesMulti = [
+
+// FESSIERS
+"images/Cartes/fessiers-01.PNG",
+"images/Cartes/fessiers-02.PNG",
+"images/Cartes/fessiers-03.PNG",
+"images/Cartes/fessiers-04.PNG",
+"images/Cartes/fessiers-05.PNG",
+"images/Cartes/fessiers-06.PNG",
+"images/Cartes/fessiers-07.PNG",
+"images/Cartes/fessiers-08.PNG",
+"images/Cartes/fessiers-09.PNG",
+"images/Cartes/fessiers-10.PNG",
+"images/Cartes/fessiers-11.PNG",
+"images/Cartes/fessiers-12.PNG",
+
+// JAMBES
+"images/Cartes/jambes-01.PNG",
+"images/Cartes/jambes-02.PNG",
+"images/Cartes/jambes-03.PNG",
+"images/Cartes/jambes-04.PNG",
+"images/Cartes/jambes-05.PNG",
+"images/Cartes/jambes-06.PNG",
+"images/Cartes/jambes-07.PNG",
+"images/Cartes/jambes-08.PNG",
+"images/Cartes/jambes-09.PNG",
+"images/Cartes/jambes-10.PNG",
+"images/Cartes/jambes-11.PNG",
+"images/Cartes/jambes-12.PNG",
+"images/Cartes/jambes-13.PNG",
+"images/Cartes/jambes-14.PNG",
+"images/Cartes/jambes-15.PNG",
+
+// BRAS
+"images/Cartes/bras-01.PNG",
+"images/Cartes/bras-02.PNG",
+"images/Cartes/bras-03.PNG",
+"images/Cartes/bras-04.PNG",
+"images/Cartes/bras-05.PNG",
+"images/Cartes/bras-06.PNG",
+"images/Cartes/bras-07.PNG",
+"images/Cartes/bras-08.PNG",
+"images/Cartes/bras-09.PNG",
+"images/Cartes/bras-10.PNG",
+"images/Cartes/bras-11.PNG",
+"images/Cartes/bras-12.PNG",
+"images/Cartes/bras-13.PNG",
+"images/Cartes/bras-14.PNG",
+"images/Cartes/bras-15.PNG",
+"images/Cartes/bras-16.PNG",
+"images/Cartes/bras-17.PNG",
+"images/Cartes/bras-18.PNG",
+"images/Cartes/bras-19.PNG",
+"images/Cartes/bras-20.PNG",
+"images/Cartes/bras-21.PNG",
+
+// ABDOS
+"images/Cartes/abdos-01.PNG",
+"images/Cartes/abdos-02.PNG",
+"images/Cartes/abdos-03.PNG",
+"images/Cartes/abdos-04.PNG",
+"images/Cartes/abdos-05.PNG",
+"images/Cartes/abdos-06.PNG",
+"images/Cartes/abdos-07.PNG",
+"images/Cartes/abdos-08.PNG",
+"images/Cartes/abdos-09.PNG",
+"images/Cartes/abdos-10.PNG",
+"images/Cartes/abdos-11.PNG",
+"images/Cartes/abdos-12.PNG",
+"images/Cartes/abdos-13.PNG",
+"images/Cartes/abdos-14.PNG",
+"images/Cartes/abdos-15.PNG",
+"images/Cartes/abdos-16.PNG",
+"images/Cartes/abdos-17.PNG",
+"images/Cartes/abdos-18.PNG",
+"images/Cartes/abdos-19.PNG",
+"images/Cartes/abdos-20.PNG",
+"images/Cartes/abdos-21.PNG",
+"images/Cartes/abdos-22.PNG",
+"images/Cartes/abdos-23.PNG",
+"images/Cartes/abdos-24.PNG",
+"images/Cartes/abdos-25.PNG",
+"images/Cartes/abdos-26.PNG",
+"images/Cartes/abdos-27.PNG",
+"images/Cartes/abdos-28.PNG",
+"images/Cartes/abdos-29.PNG",
+
+// DOS
+"images/Cartes/dos-01.PNG",
+"images/Cartes/dos-02.PNG",
+"images/Cartes/dos-03.PNG",
+"images/Cartes/dos-04.PNG",
+"images/Cartes/dos-05.PNG",
+"images/Cartes/dos-06.PNG",
+"images/Cartes/dos-07.PNG",
+"images/Cartes/dos-08.PNG",
+"images/Cartes/dos-09.PNG",
+"images/Cartes/dos-10.PNG",
+"images/Cartes/dos-11.PNG",
+"images/Cartes/dos-12.PNG",
+"images/Cartes/dos-13.PNG",
+"images/Cartes/dos-14.PNG",
+"images/Cartes/dos-15.PNG",
+"images/Cartes/dos-16.PNG",
+"images/Cartes/dos-17.PNG",
+"images/Cartes/dos-18.PNG",
+"images/Cartes/dos-19.PNG",
+"images/Cartes/dos-20.PNG",
+
+// CORPS COMPLET
+"images/Cartes/corps-complet-01.jpg",
+"images/Cartes/corps-complet-02.PNG",
+"images/Cartes/corps-complet-03.jpg",
+"images/Cartes/corps-complet-04.jpg",
+"images/Cartes/corps-complet-05.jpg",
+"images/Cartes/corps-complet-06.jpg",
+"images/Cartes/corps-complet-07.jpg",
+"images/Cartes/corps-complet-08.jpg",
+"images/Cartes/corps-complet-09.jpg",
+"images/Cartes/corps-complet-10.jpg",
+"images/Cartes/corps-complet-11.jpg",
+"images/Cartes/corps-complet-12.PNG",
+"images/Cartes/corps-complet-13.PNG",
+"images/Cartes/corps-complet-14.PNG",
+"images/Cartes/corps-complet-15.PNG",
+"images/Cartes/corps-complet-16.PNG",
+"images/Cartes/corps-complet-17.PNG",
+"images/Cartes/corps-complet-18.PNG",
+"images/Cartes/corps-complet-19.PNG",
+"images/Cartes/corps-complet-20.PNG",
+"images/Cartes/corps-complet-21.PNG",
+"images/Cartes/corps-complet-22.PNG",
+"images/Cartes/corps-complet-23.PNG",
+"images/Cartes/corps-complet-24.PNG",
+"images/Cartes/corps-complet-25.PNG",
+"images/Cartes/corps-complet-26.PNG",
+"images/Cartes/corps-complet-27.PNG",
+"images/Cartes/corps-complet-28.PNG",
+"images/Cartes/corps-complet-29.PNG",
+"images/Cartes/corps-complet-30.PNG",
+"images/Cartes/corps-complet-31.PNG",
+"images/Cartes/corps-complet-32.PNG"
+];
+
+cartesMulti.sort(() => Math.random() - 0.5);
+
+for (let i = 0; i < 6; i++) {
+
+let container = document.createElement("div");
+container.className = "carte-container";
+
+let flip = document.createElement("div");
+flip.className = "carte-flip";
+
+let dos = document.createElement("img");
+dos.src = "images/Dos/dos-toutes-familles.PNG";
+dos.className = "carte-face";
+dos.alt = "Dos de carte";
+
+let avant = document.createElement("img");
+avant.src = cartesMulti[i];
+avant.className = "carte-face carte-face-avant";
+avant.alt = "Carte exercice";
+
+flip.appendChild(dos);
+flip.appendChild(avant);
+
+container.appendChild(flip);
+
+container.onclick = function() {
+
+if (carteMultiActive) {
+return;
+}
+
+carteMultiActive = true;
+carteMultiChoisie = cartesMulti[i];
+
+flip.classList.add("retournee");
+document.getElementById("boutonCommencerExerciceMulti").style.display = "block";
+if (modeMultijoueur === "meme") {
+
+niveauEtoilesMulti = Math.floor(Math.random() * 5) + 1;
+
+let etoiles = "⭐".repeat(niveauEtoilesMulti);
+
+document.getElementById("niveauMulti").textContent =
+"Niveau à réaliser : " + etoiles;
+
+} else {
+
+document.getElementById("niveauMulti").textContent =
+"Réalise ton niveau indiqué sur la carte.";
+
+}
+};
+
+zone.appendChild(container);
+}
+// ----- CARTE SPÉCIALE FACULTATIVE MULTI -----
+
+let titreSpecialeMulti = document.createElement("h2");
+titreSpecialeMulti.textContent = "🔥 Tu veux défier les dieux ?";
+titreSpecialeMulti.style.marginTop = "30px";
+
+let texteSpecialeMulti = document.createElement("p");
+texteSpecialeMulti.textContent = "La carte spéciale est facultative.";
+
+zone.appendChild(titreSpecialeMulti);
+zone.appendChild(texteSpecialeMulti);
+
+
+// Tirage d'une carte spéciale parmi les 30
+
+let numeroSpecialeMulti = "";
+
+if (modeMultijoueur === "meme") {
+
+let numeroAleatoire =
+Math.floor(Math.random() * 30) + 1;
+
+numeroSpecialeMulti =
+String(numeroAleatoire).padStart(2, "0");
+
+}
+
+if (modeMultijoueur === "different") {
+
+const cartesSpecialesMultiDifferent = [
+"01","02","03","04","05","06","07","08","09","10",
+"11","12","13","14","16","17","18","19","20",
+"21","22","23","24","25","27","28","29","30"
+];
+
+numeroSpecialeMulti =
+cartesSpecialesMultiDifferent[
+Math.floor(
+Math.random() *
+cartesSpecialesMultiDifferent.length
+)
+];
+
+}
+let imageSpecialeMulti =
+"images/Cartes/Speciales/speciales-" +
+numeroSpecialeMulti +
+".PNG";
+
+
+// Création de la carte spéciale
+
+let containerSpecialeMulti = document.createElement("div");
+containerSpecialeMulti.className = "carte-container";
+
+let flipSpecialeMulti = document.createElement("div");
+flipSpecialeMulti.className = "carte-flip";
+
+let dosSpecialeMulti = document.createElement("img");
+dosSpecialeMulti.src = "images/Dos/dos-speciales.PNG";
+dosSpecialeMulti.className = "carte-face";
+dosSpecialeMulti.alt = "Dos de carte spéciale";
+
+let avantSpecialeMulti = document.createElement("img");
+avantSpecialeMulti.src = imageSpecialeMulti;
+avantSpecialeMulti.className = "carte-face carte-face-avant";
+avantSpecialeMulti.alt = "Carte spéciale";
+
+flipSpecialeMulti.appendChild(dosSpecialeMulti);
+flipSpecialeMulti.appendChild(avantSpecialeMulti);
+
+containerSpecialeMulti.appendChild(flipSpecialeMulti);
+
+
+// Retournement facultatif
+
+containerSpecialeMulti.onclick = function() {
+
+if (!flipSpecialeMulti.classList.contains("retournee")) {
+
+flipSpecialeMulti.classList.add("retournee");
+
+carteSpecialeMultiRetournee = true;
+imageCarteSpecialeMultiChoisie = imageSpecialeMulti;
+
+}
+
+};
+
+zone.appendChild(containerSpecialeMulti);
+}
+
+function commencerExerciceMulti() {
+
+document.getElementById("plateauMulti").style.display = "none";
+
+if (carteSpecialeMultiRetournee) {
+
+document.getElementById("grandeCarteSpeciale").src =
+imageCarteSpecialeMultiChoisie;
+
+origineCarteSpeciale = "multi";
+
+document.getElementById("specialeEnGrand").style.display = "block";
+
+} else {
+
+afficherExerciceMultiEnGrand();
+
+}
+
+}
+
+
+function afficherExerciceMultiEnGrand() {
+
+document.getElementById("executionMulti").style.display = "block";
+
+document.getElementById("grandeCarteMulti").src =
+carteMultiChoisie;
+
+let niveau = document.getElementById("niveauExecutionMulti");
+
+if (modeMultijoueur === "meme") {
+
+niveau.textContent =
+"Niveau à réaliser : " +
+"⭐".repeat(niveauEtoilesMulti);
+
+} else {
+
+niveau.textContent =
+"Réalise le niveau indiqué sur ta carte.";
+
+}
+
+}
+
+
+function joueurSuivantDepuisExerciceMulti() {
+let joueurActuel = joueursMulti[joueurMultiActuel];
+
+exercicesParJoueur[joueurActuel]++;
+
+document.getElementById("executionMulti").style.display = "none";
+
+joueurMultiActuel++;
+
+if (joueurMultiActuel >= joueursMulti.length) {
+joueurMultiActuel = 0;
+}
+
+document.getElementById("plateauMulti").style.display = "block";
+
+afficherTourMulti();
+
+}
+
+
+
+
+
+</script>
+
+</body>
+
+</html>
+
+
