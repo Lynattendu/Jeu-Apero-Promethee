@@ -219,7 +219,28 @@ font-size: 17px;
 transform: scale(0.97);
 }
 
+#zoneCartes {
+display: grid;
+grid-template-columns: repeat(3, 140px);
+gap: 16px;
+justify-content: center;
+margin: 25px auto;
+}
 
+@media (max-width: 500px) {
+
+.carte-container {
+width: 105px;
+height: 158px;
+margin: 0;
+}
+
+#zoneCartes {
+grid-template-columns: repeat(3, 105px);
+gap: 10px;
+}
+
+}
 
 </style>
 
@@ -294,7 +315,26 @@ C'est Fait
 </button>
 
 
+<!-- ÉCRAN CHOIX D'UNE CARTE -->
+<div id="tirage" class="ecran-jeu" style="display:none;">
 
+<h1 id="titreTirage">🔥 CHOISIS UNE CARTE</h1>
+
+<p id="infoTirage"></p>
+
+<div id="zoneCartes"></div>
+
+<br>
+
+<button class="bouton-retour" onclick="retourFamilles()">
+← Retour aux familles
+</button>
+
+</div>
+
+
+
+  
 <script>
 
 let modeJeu = "";
@@ -315,12 +355,25 @@ document.getElementById("rapide").style.display = "block";
 }
 
 function ouvrirFamille(famille) {
+
 familleChoisie = famille;
 
-alert(
-"Mode : " + modeJeu +
-"\nFamille : " + familleChoisie
-);
+document.getElementById("rapide").style.display = "none";
+document.getElementById("tirage").style.display = "block";
+
+document.getElementById("infoTirage").textContent =
+familleChoisie +
+" • " +
+(modeJeu === "rapide" ? "30 secondes" : "1 min 30");
+
+}
+  function retourFamilles() {
+
+document.getElementById("tirage").style.display = "none";
+document.getElementById("rapide").style.display = "block";
+
+familleChoisie = "";
+
 }
 
 function retourAccueil() {
