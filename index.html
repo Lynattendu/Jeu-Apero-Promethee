@@ -375,7 +375,17 @@ C'est Fait
 <p id="infoTirage"></p>
 
 <div id="zoneCartes"></div>
+<div id="actionsCarte" style="display:none; margin-top:25px;">
 
+<button class="bouton-famille" onclick="nouveauDessin()">
+🔥 Nouveau dessin
+</button>
+
+<button class="bouton-retour" onclick="terminerJeu()">
+✅ Terminer
+</button>
+
+</div>
 <br>
 
 <button class="bouton-retour" onclick="retourFamilles()">
@@ -610,7 +620,7 @@ carte.remove();
 zone.style.gridTemplateColumns = "1fr";
 
 container.classList.add("carte-grande");
-
+document.getElementById("actionsCarte").style.display = "block";
 }, 1200);
 
 };
@@ -641,7 +651,28 @@ document.getElementById("accueil").style.display = "block";
 modeJeu = "";
 familleChoisie = "";
 }
+function nouveauDessin() {
 
+document.getElementById("actionsCarte").style.display = "none";
+
+document.getElementById("zoneCartes").style.gridTemplateColumns = "";
+
+afficherSixCartes();
+
+}
+
+function terminerJeu() {
+
+document.getElementById("tirage").style.display = "none";
+document.getElementById("accueil").style.display = "block";
+
+document.getElementById("actionsCarte").style.display = "none";
+
+modeJeu = "";
+familleChoisie = "";
+
+}
+  
 
 
 
