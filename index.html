@@ -563,21 +563,21 @@ if (flip.classList.contains("retournee")) {
 return;
 }
 
-// ÉTAPE 1 : la carte commence son retournement
+// 1. La carte se resserre
 flip.classList.add("animation");
 
 setTimeout(function() {
 
-// ÉTAPE 2 : afficher le recto
+// 2. On affiche le recto
 flip.classList.add("retournee");
 flip.classList.remove("animation");
 
 }, 250);
 
 
+// 3. On laisse le temps de voir la carte retournée
 setTimeout(function() {
 
-// ÉTAPE 3 : faire disparaître les 5 autres cartes
 const toutesLesCartes =
 zone.querySelectorAll(".carte-container");
 
@@ -589,12 +589,13 @@ carte.classList.add("carte-disparait");
 
 });
 
-}, 550);
+}, 800);
 
 
+// 4. Une fois les autres disparues,
+// on garde seulement la carte choisie
 setTimeout(function() {
 
-// ÉTAPE 4 : supprimer réellement les autres cartes
 const toutesLesCartes =
 zone.querySelectorAll(".carte-container");
 
@@ -606,28 +607,24 @@ carte.remove();
 
 });
 
-// La carte choisie commence à venir au centre
-container.classList.add("carte-vers-centre");
-
 zone.style.gridTemplateColumns = "1fr";
 
-}, 950);
-
-
-setTimeout(function() {
-
-// ÉTAPE 5 : agrandir la carte
 container.classList.add("carte-grande");
 
-}, 1050);
+}, 1200);
 
 };
-  container.appendChild(flip);
+
+
+container.appendChild(flip);
 zone.appendChild(container);
 
 });
 
 }
+
+
+  
   function retourFamilles() {
 
 document.getElementById("tirage").style.display = "none";
