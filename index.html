@@ -117,14 +117,14 @@ font-weight: normal;
 opacity: 0.85;
 }
 
-#solo {
+#rapide {
 min-height: 100vh;
 box-sizing: border-box;
 padding: 30px 18px 40px;
 text-align: center;
 }
 
-#solo h1 {
+#rapide h1 {
 margin: 10px 0 10px;
 font-size: clamp(28px, 7vw, 46px);
 color: #ffffff;
@@ -133,7 +133,7 @@ text-shadow:
 0 0 18px rgba(255, 140, 0, 0.25);
 }
 
-#solo p {
+#rapide p {
 margin-bottom: 26px;
 color: #d9e3f0;
 font-size: 17px;
@@ -337,13 +337,13 @@ text-align: left;
   </p>
 
 <button class="bouton-accueil" onclick="ouvrirRapide()">
-🏋️ JEU RAPIDE
-<span> Dessine en 30 secondes Max</span>
+JEU RAPIDE
+<span> Dessinez en 30 secondes Max</span>
 </button>
 
 <button class="bouton-accueil" onclick="ouvrirMultijoueur()">
-👥 JEU APPROFONDIE
-<span>Dessine en 1 minute 30 secondes Maximum</span>
+JEU APPROFONDIE
+<span>Dessinez en 1 minute 30 secondes Maximum</span>
 </button>
 
 </div>
@@ -388,73 +388,6 @@ C'est Fait
 <button class="bouton-retour" onclick="retourAccueil()">
 ← Retour
 </button>
-
-</div>
-<!-- ÉCRAN CHOIX ENTRAÎNEMENT -->
-<div id="choixEntrainement" class="ecran-jeu" style="display:none;">
-
-<h1 id="titreFamille"></h1>
-
-<p>Choisis ton entraînement</p>
-
-<button class="bouton-mode" onclick="ouvrirHasard()">
-🎲 ENTRAÎNEMENT HASARD
-</button>
-
-<button class="bouton-mode" onclick="ouvrirCircuit()">
-
-🔄 ENTRAÎNEMENT CIRCUIT
-
-</button>
-
-<br><br>
-
-<button class="bouton-retour" onclick="retourRapide()">
-← Retour
-</button>
-
-</div>
-
-<!-- ÉCRAN CIRCUIT -->
-<div id="circuit" class="ecran-jeu" style="display:none;">
-
-<h1>🔥 CIRCUIT</h1>
-
-<p id="titreCircuit"></p>
-
-<p>Combien d'exercices veux-tu ?</p>
-
-<button class="bouton-mode" onclick="choisirCircuit(3)">
-🔥 3 EXERCICES
-</button>
-
-<button class="bouton-mode" onclick="choisirCircuit(5)">
-⚡ 5 EXERCICES
-</button>
-
-<br><br>
-
-<button class="bouton-retour" onclick="retourChoixEntrainement()">
-← Retour
-</button>
-
-</div>
-
-<!-- ÉCRAN CARTES DU CIRCUIT -->
-<div id="cartesCircuit" style="display:none;">
-
-<h1>🔥 TON CIRCUIT</h1>
-
-<p id="infoCircuit"></p>
-
-<div id="zoneCartes"></div>
-
-<br>
-
-<button onclick="retourCircuit()">
-← Retour
-</button>
-</div>
 
 <!-- ÉCRAN EXÉCUTION DU CIRCUIT -->
 <div id="executionCircuit" style="display:none; text-align:center;">
@@ -639,162 +572,9 @@ object-fit:contain;
 
 </div>
 
-<!-- ÉCRAN JOUEURS MULTI -->
-<div id="joueursMulti" class="ecran-jeu" style="display:none;">
 
-<h1>👥 LES JOUEURS</h1>
 
-<p>Entre les pseudos des participants</p>
 
-<div id="listeJoueursMulti">
-
-<input
-class="champ-joueur"
-type="text"
-placeholder="Joueur 1"
->
-
-<input
-class="champ-joueur"
-type="text"
-placeholder="Joueur 2"
->
-
-</div>
-
-<button class="bouton-mode" onclick="ajouterJoueurMulti()">
-➕ AJOUTER UN JOUEUR
-</button>
-
-<button class="bouton-principal" onclick="validerJoueursMulti()">
-🔥 COMMENCER LA PARTIE
-</button>
-
-<button class="bouton-retour" onclick="retourModeMulti()">
-← Retour
-</button>
-
-</div>
-
-<!-- ÉCRAN PLATEAU MULTI -->
-<div id="plateauMulti" class="ecran-jeu" style="display:none;">
-
-<h1 id="tourJoueurMulti">
-🔥 AU TOUR DE ...
-</h1>
-
-<p id="infoModeMulti"></p>
-<p
-id="niveauMulti"
-style="
-font-size:24px;
-font-weight:bold;
-min-height:32px;
-"
-></p>
-<div id="zoneCartesMulti"></div>
-<button
-id="boutonCommencerExerciceMulti"
-class="bouton-principal"
-onclick="commencerExerciceMulti()"
-style="display:none;"
->
-🔥 COMMENCER L'EXERCICE
-</button>
-<br>
-
-<button
-class="bouton-principal"
-onclick="joueurSuivantMulti()"
->
-➡️ JOUEUR SUIVANT
-</button>
-
-<button
-class="bouton-retour"
-onclick="finPartieMulti()"
->
-🏁 FIN DE PARTIE
-</button>
-
-</div>
-
-<!-- ÉCRAN EXERCICE MULTI EN GRAND -->
-<div id="executionMulti" class="ecran-jeu" style="display:none; text-align:center;">
-
-<h1 id="titreExecutionMulti">🔥 EXERCICE EN COURS</h1>
-
-<div
-id="niveauExecutionMulti"
-style="
-font-size:28px;
-font-weight:bold;
-margin-bottom:18px;
-"
-></div>
-
-<img
-id="grandeCarteMulti"
-alt="Exercice multijoueur"
-style="
-max-width:90%;
-max-height:70vh;
-border-radius:16px;
-object-fit:contain;
-"
->
-
-<br><br>
-
-<button
-class="bouton-principal"
-onclick="joueurSuivantDepuisExerciceMulti()"
->
-➡️ JOUEUR SUIVANT
-</button>
-
-<button
-class="bouton-retour"
-onclick="finPartieMulti()"
->
-🏁 FIN DE PARTIE
-</button>
-
-</div>
-
-<!-- ÉCRAN FIN DE PARTIE MULTI -->
-<div id="finMulti" class="ecran-jeu" style="display:none; text-align:center;">
-
-<h1>🔥 ÉPREUVE TERMINÉE</h1>
-<p
-id="bilanMulti"
-style="
-font-size:20px;
-line-height:1.6;
-margin:25px auto;
-max-width:500px;
-white-space:pre-line;
-"
-></p>
-<p
-id="phraseFinMulti"
-style="
-font-size:24px;
-font-weight:bold;
-max-width:500px;
-margin:35px auto;
-line-height:1.5;
-"
-></p>
-
-<button
-class="bouton-principal"
-onclick="retourAccueilDepuisFinMulti()"
->
-🏠 RETOUR À L'ACCUEIL
-</button>
-
-</div>
 
 <script>
 
