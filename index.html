@@ -389,28 +389,133 @@ afficherSixCartes();
 function afficherSixCartes() {
 
 const zone = document.getElementById("zoneCartes");
-
 zone.innerHTML = "";
 
-const dos = dosFamilles[familleChoisie];
+// Pour l'instant seules RS et RA sont prêtes
+if (
+familleChoisie !== "Rêves Secrets" &&
+familleChoisie !== "Révélateur de l Apéro"
+) {
 
-for (let i = 0; i < 6; i++) {
+zone.innerHTML = `
+<p>🔥 Cette famille sera disponible dès que ses cartes seront renommées.</p>
+`;
 
-const carte = document.createElement("div");
+return;
+}
 
-carte.className = "carte-container";
 
-carte.innerHTML = `
+// ----------------------
+// RÊVES SECRETS
+// ----------------------
+
+let codeFamille = "";
+let debut = 0;
+let fin = 0;
+
+if (familleChoisie === "Rêves Secrets") {
+
+codeFamille = "RS";
+
+if (modeJeu === "rapide") {
+debut = 1;
+fin = 40;
+} else {
+debut = 50;
+fin = 98;
+}
+
+}
+
+
+// ----------------------
+// RÉVÉLATEUR DE L'APÉRO
+// ----------------------
+
+if (familleChoisie === "Révélateur de l Apéro") {
+
+codeFamille = "RA";
+
+if (modeJeu === "rapide") {
+debut = 1;
+fin = 80;
+} else {
+debut = 100;
+fin = 157;
+}
+
+}
+
+
+// ----------------------
+// CHOISIR 6 CARTES DIFFÉRENTES
+// ----------------------
+
+const numerosChoisis = [];
+
+while (numerosChoisis.length < 6) {
+
+const numero =
+Math.floor(Math.random() * (fin - debut + 1)) + debut;
+
+if (!numerosChoisis.includes(numero)) {
+numerosChoisis.push(numero);
+}
+
+}
+
+
+// ----------------------
+// CRÉER LES 6 CARTES
+// ----------------------
+
+numerosChoisis.forEach(numero => {
+
+const numeroTexte =
+numero.toString().padStart(2, "0");
+
+const devant =
+`image/Famille/${codeFamille}/${codeFamille}-${numeroTexte}.PNG`;
+
+const dos =
+dosFamilles[familleChoisie];
+
+const container =
+document.createElement("div");
+
+container.className = "carte-container";
+
+const flip =
+document.createElement("div");
+
+flip.className = "carte-flip";
+
+flip.innerHTML = `
+
 <img
 src="${dos}"
 class="carte-face"
 alt="Dos de carte"
 >
+
+<img
+src="${devant}"
+class="carte-face carte-face-avant"
+alt="Carte ${codeFamille}-${numeroTexte}"
+>
+
 `;
 
-zone.appendChild(carte);
+flip.onclick = function() {
 
-}
+flip.classList.add("retournee");
+
+};
+
+container.appendChild(flip);
+zone.appendChild(container);
+
+});
 
 }
 
