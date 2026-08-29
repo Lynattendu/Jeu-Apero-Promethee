@@ -18,25 +18,33 @@ perspective: 1000px;
 width: 100%;
 height: 100%;
 position: relative;
-transform-style: preserve-3d;
-transition: transform 0.7s;
-}
-
-.carte-flip.retournee {
-transform: rotateY(180deg);
+transition: transform 0.25s ease;
 }
 
 .carte-face {
 position: absolute;
+top: 0;
+left: 0;
 width: 100%;
 height: 100%;
-backface-visibility: hidden;
 border-radius: 12px;
 object-fit: cover;
 }
 
 .carte-face-avant {
-transform: rotateY(180deg);
+display: none;
+}
+
+.carte-flip.retournee .carte-face:first-child {
+display: none;
+}
+
+.carte-flip.retournee .carte-face-avant {
+display: block;
+}
+
+.carte-flip.animation {
+transform: scaleX(0.05);
 }
 
 body {
@@ -508,7 +516,18 @@ alt="Carte ${codeFamille}-${numeroTexte}"
 
 flip.onclick = function() {
 
+if (flip.classList.contains("retournee")) {
+return;
+}
+
+flip.classList.add("animation");
+
+setTimeout(function() {
+
 flip.classList.add("retournee");
+flip.classList.remove("animation");
+
+}, 250);
 
 };
 
