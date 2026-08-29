@@ -656,40 +656,43 @@ familleChoisie + " • " + nombre + " exercices";
 
 let imageDos = "";
 
-if (familleChoisie === "⚡ CORPS COMPLET") {
-imageDos = "images/Dos/dos-corps-complet.PNG";
+if (familleChoisie === "Rêves Secrets") {
+imageDos = "Image/Dos/Dos-RS.PNG";
 }
 
-if (familleChoisie === "🦵 JAMBES") {
-imageDos = "images/Dos/dos-jambes.PNG";
+if (familleChoisie === "Révélateur de l Apéro") {
+imageDos = "Image/Dos/Dos-RA.PNG";
 }
 
-if (familleChoisie === "💪 BRAS") {
-imageDos = "images/Dos/dos-bras.PNG";
+if (familleChoisie === "Les Pouvoirs Cachés") {
+imageDos = "Image/Dos/Dos-PC.PNG";
 }
 
-if (familleChoisie === "🍑 FESSIERS") {
-imageDos = "images/Dos/dos-fessiers.PNG";
+if (familleChoisie === "Les Faux Secrets") {
+imageDos = "Image/Dos/Dos-FS.PNG";
 }
 
-if (familleChoisie === "🔥 ABDOS") {
-imageDos = "images/Dos/dos-abdos.PNG";
+if (familleChoisie === "Les Habitudes Honteuses") {
+imageDos = "Image/Dos/Dos-HH.PNG";
 }
 
-if (familleChoisie === "🛡️ DOS") {
-imageDos = "images/Dos/dos-dos.PNG";
+if (familleChoisie === "Les Experts en Amour") {
+imageDos = "Image/Dos/Dos-EA.PNG";
 }
 
+if (familleChoisie === "C est Fait") {
+imageDos = "Image/Dos/Dos-CF.PNG";
+}
 if (familleChoisie === "🌈 TOUTES LES FAMILLES") {
-imageDos = "images/Dos/dos-toutes-familles.PNG";
-}
+imageDos = "Image/Dos/Dos-RS.PNG";
+} 
 
 let zone = document.getElementById("zoneCartes");
 zone.innerHTML = "";
 
 const cartesParFamille = {
 
-"🍑 FESSIERS": [
+"Rêves Secrets": [
 "images/Cartes/fessiers-01.PNG",
 "images/Cartes/fessiers-02.PNG",
 "images/Cartes/fessiers-03.PNG",
@@ -704,7 +707,7 @@ const cartesParFamille = {
 "images/Cartes/fessiers-12.PNG"
 ],
 
-"🦵 JAMBES": [
+"Révélateur de l Apéro": [
 "images/Cartes/jambes-01.PNG",
 "images/Cartes/jambes-02.PNG",
 "images/Cartes/jambes-03.PNG",
@@ -722,7 +725,7 @@ const cartesParFamille = {
 "images/Cartes/jambes-15.PNG"
 ],
 
-"💪 BRAS": [
+"Les Pouvoirs Cachés": [
 "images/Cartes/bras-01.PNG",
 "images/Cartes/bras-02.PNG",
 "images/Cartes/bras-03.PNG",
@@ -747,7 +750,7 @@ const cartesParFamille = {
 
 ],
 
-"🔥 ABDOS": [
+"Les Faux Secrets": [
 "images/Cartes/abdos-01.PNG",
 "images/Cartes/abdos-02.PNG",
 "images/Cartes/abdos-03.PNG",
@@ -779,7 +782,7 @@ const cartesParFamille = {
 "images/Cartes/abdos-29.PNG"
 ],
 
-"🛡️ DOS": [
+"Les Habitudes Honteuses": [
 "images/Cartes/dos-01.PNG",
 "images/Cartes/dos-02.PNG",
 "images/Cartes/dos-03.PNG",
@@ -802,7 +805,30 @@ const cartesParFamille = {
 "images/Cartes/dos-20.PNG"
 ],
 
-"⚡ CORPS COMPLET": [
+"Les Experts en Amour": [
+"images/Cartes/dos-01.PNG",
+"images/Cartes/dos-02.PNG",
+"images/Cartes/dos-03.PNG",
+"images/Cartes/dos-04.PNG",
+"images/Cartes/dos-05.PNG",
+"images/Cartes/dos-06.PNG",
+"images/Cartes/dos-07.PNG",
+"images/Cartes/dos-08.PNG",
+"images/Cartes/dos-09.PNG",
+"images/Cartes/dos-10.PNG",
+"images/Cartes/dos-11.PNG",
+"images/Cartes/dos-12.PNG",
+"images/Cartes/dos-13.PNG",
+"images/Cartes/dos-14.PNG",
+"images/Cartes/dos-15.PNG",
+"images/Cartes/dos-16.PNG",
+"images/Cartes/dos-17.PNG",
+"images/Cartes/dos-18.PNG",
+"images/Cartes/dos-19.PNG",
+"images/Cartes/dos-20.PNG"
+],
+
+"C est Fait": [
 "images/Cartes/corps-complet-01.jpg",
 "images/Cartes/corps-complet-02.PNG",
 "images/Cartes/corps-complet-03.jpg",
@@ -892,105 +918,7 @@ flip.classList.add("retournee");
 // On affiche la carte
 zone.appendChild(container);
 }
-// ----- CARTE SPÉCIALE FACULTATIVE -----
 
-let titreSpeciale = document.createElement("h2");
-titreSpeciale.textContent = "🔥 Tu veux défier les dieux ?";
-titreSpeciale.style.marginTop = "30px";
-
-let texteSpeciale = document.createElement("p");
-texteSpeciale.textContent = "La carte spéciale est facultative.";
-
-zone.appendChild(titreSpeciale);
-zone.appendChild(texteSpeciale);
-
-
-// Choisir une carte spéciale au hasard entre 01 et 30
-
-const cartesSpecialesRapide = [
-"02", "03", "04", "07",
-"09", "10", "12", "14",
-"16", "19", "20", "22",
-"24", "26"
-];
-
-let numeroSpeciale =
-cartesSpecialesRapide[
-Math.floor(Math.random() * cartesSpecialesRapide.length)
-];
-
-let imageSpeciale =
-"images/Cartes/Speciales/speciales-" +
-numeroSpeciale +
-".PNG";
-
-
-// Créer la carte spéciale
-
-let containerSpeciale = document.createElement("div");
-containerSpeciale.className = "carte-container";
-
-let flipSpeciale = document.createElement("div");
-flipSpeciale.className = "carte-flip";
-
-
-// Dos de la carte spéciale
-
-let dosSpeciale = document.createElement("img");
-dosSpeciale.src = "images/Dos/dos-speciales.PNG";
-dosSpeciale.className = "carte-face";
-dosSpeciale.alt = "Dos de carte spéciale";
-
-
-// Face de la carte spéciale
-
-let avantSpeciale = document.createElement("img");
-avantSpeciale.src = imageSpeciale;
-avantSpeciale.className = "carte-face carte-face-avant";
-avantSpeciale.alt = "Carte spéciale";
-
-
-// Construire la carte
-
-flipSpeciale.appendChild(dosSpeciale);
-flipSpeciale.appendChild(avantSpeciale);
-
-containerSpeciale.appendChild(flipSpeciale);
-
-
-// Retournement au toucher
-
-containerSpeciale.onclick = function() {
-
-if (!flipSpeciale.classList.contains("retournee")) {
-
-flipSpeciale.classList.add("retournee");
-
-carteSpecialeRetournee = true;
-imageCarteSpecialeChoisie = imageSpeciale;
-
-}
-
-};
-
-
-// Afficher la carte
-
-zone.appendChild(containerSpeciale);
-let boutonCommencer = document.createElement("button");
-
-boutonCommencer.textContent = "🔥 COMMENCER LE CIRCUIT";
-
-boutonCommencer.style.display = "block";
-boutonCommencer.style.margin = "30px auto";
-boutonCommencer.style.padding = "15px 25px";
-boutonCommencer.style.fontSize = "18px";
-
-boutonCommencer.onclick = commencerCircuit;
-
-zone.appendChild(boutonCommencer);
-
-}
 
 function retourChoixEntrainement() {
 document.getElementById("circuit").style.display = "none";
@@ -1162,33 +1090,36 @@ document.getElementById("titreHasard").textContent = familleChoisie;
 
 let imageDosHasard = "";
 
-if (familleChoisie === "⚡ CORPS COMPLET") {
-imageDosHasard = "images/Dos/dos-corps-complet.PNG";
+if (familleChoisie === "Rêves Secrets") {
+imageDosHasard = "Image/Dos/Dos-RS.PNG";
 }
 
-if (familleChoisie === "🦵 JAMBES") {
-imageDosHasard = "images/Dos/dos-jambes.PNG";
+if (familleChoisie === "Révélateur de l Apéro") {
+imageDosHasard = "Image/Dos/Dos-RA.PNG";
 }
 
-if (familleChoisie === "💪 BRAS") {
-imageDosHasard = "images/Dos/dos-bras.PNG";
+if (familleChoisie === "Les Pouvoirs Cachés") {
+imageDosHasard = "Image/Dos/Dos-PC.PNG";
 }
 
-if (familleChoisie === "🍑 FESSIERS") {
-imageDosHasard = "images/Dos/dos-fessiers.PNG";
+if (familleChoisie === "Les Faux Secrets") {
+imageDosHasard = "Image/Dos/Dos-FS.PNG";
 }
 
-if (familleChoisie === "🔥 ABDOS") {
-imageDosHasard = "images/Dos/dos-abdos.PNG";
+if (familleChoisie === "Les Habitudes Honteuses") {
+imageDosHasard = "Image/Dos/Dos-HH.PNG";
 }
 
-if (familleChoisie === "🛡️ DOS") {
-imageDosHasard = "images/Dos/dos-dos.PNG";
+if (familleChoisie === "Les Experts en Amour") {
+imageDosHasard = "Image/Dos/Dos-EA.PNG";
 }
 
+if (familleChoisie === "C est Fait") {
+imageDosHasard = "Image/Dos/Dos-CF.PNG";
+}
 if (familleChoisie === "🌈 TOUTES LES FAMILLES") {
-imageDosHasard = "images/Dos/dos-toutes-familles.PNG";
-}
+imageDosHasard = "Image/Dos/Dos-RS.PNG";
+} 
 
 let zone = document.getElementById("zoneCartesHasard");
 
@@ -1196,7 +1127,7 @@ zone.innerHTML = "";
 
 const cartesParFamilleHasard = {
 
-"🍑 FESSIERS": [
+"Rêves Secrets": [
 "images/Cartes/fessiers-01.PNG",
 "images/Cartes/fessiers-02.PNG",
 "images/Cartes/fessiers-03.PNG",
@@ -1211,7 +1142,7 @@ const cartesParFamilleHasard = {
 "images/Cartes/fessiers-12.PNG"
 ],
 
-"🦵 JAMBES": [
+"Révélateur de l Apéro": [
 "images/Cartes/jambes-01.PNG",
 "images/Cartes/jambes-02.PNG",
 "images/Cartes/jambes-03.PNG",
@@ -1229,7 +1160,7 @@ const cartesParFamilleHasard = {
 "images/Cartes/jambes-15.PNG"
 ],
 
-"💪 BRAS": [
+"Les Pouvoirs Cachés": [
 "images/Cartes/bras-01.PNG",
 "images/Cartes/bras-02.PNG",
 "images/Cartes/bras-03.PNG",
@@ -1254,7 +1185,7 @@ const cartesParFamilleHasard = {
 
 ],
 
-"🔥 ABDOS": [
+"Les Faux Secrets": [
 "images/Cartes/abdos-01.PNG",
 "images/Cartes/abdos-02.PNG",
 "images/Cartes/abdos-03.PNG",
@@ -1286,7 +1217,7 @@ const cartesParFamilleHasard = {
 "images/Cartes/abdos-29.PNG"
 ],
 
-"🛡️ DOS": [
+"Les Habitudes Honteuses": [
 "images/Cartes/dos-01.PNG",
 "images/Cartes/dos-02.PNG",
 "images/Cartes/dos-03.PNG",
@@ -1309,7 +1240,30 @@ const cartesParFamilleHasard = {
 "images/Cartes/dos-20.PNG"
 ],
 
-"⚡ CORPS COMPLET": [
+"Les Experts en Amour": [
+"images/Cartes/dos-01.PNG",
+"images/Cartes/dos-02.PNG",
+"images/Cartes/dos-03.PNG",
+"images/Cartes/dos-04.PNG",
+"images/Cartes/dos-05.PNG",
+"images/Cartes/dos-06.PNG",
+"images/Cartes/dos-07.PNG",
+"images/Cartes/dos-08.PNG",
+"images/Cartes/dos-09.PNG",
+"images/Cartes/dos-10.PNG",
+"images/Cartes/dos-11.PNG",
+"images/Cartes/dos-12.PNG",
+"images/Cartes/dos-13.PNG",
+"images/Cartes/dos-14.PNG",
+"images/Cartes/dos-15.PNG",
+"images/Cartes/dos-16.PNG",
+"images/Cartes/dos-17.PNG",
+"images/Cartes/dos-18.PNG",
+"images/Cartes/dos-19.PNG",
+"images/Cartes/dos-20.PNG"
+],
+
+"C est Fait": [
 "images/Cartes/corps-complet-01.jpg",
 "images/Cartes/corps-complet-02.PNG",
 "images/Cartes/corps-complet-03.jpg",
@@ -1406,70 +1360,6 @@ document.getElementById("boutonCommencerExerciceHasard").style.display = "inline
 zone.appendChild(container);
 }
 
-
-// ICI seulement commence la carte spéciale
-
-let titreSpecialeHasard = document.createElement("h2");
-titreSpecialeHasard.textContent = "🔥 Tu veux défier les dieux ?";
-
-let texteSpecialeHasard = document.createElement("p");
-texteSpecialeHasard.textContent = "La carte spéciale est facultative.";
-
-zone.appendChild(titreSpecialeHasard);
-zone.appendChild(texteSpecialeHasard);
-
-const cartesSpecialesSoloHasard = [
-"02", "03", "04", "07",
-"09", "10", "12", "14",
-"16", "19", "20", "22",
-"24", "26"
-];
-
-let numeroSpecialeHasard =
-cartesSpecialesRapideHasard[
-Math.floor(Math.random() * cartesSpecialesRapideHasard.length)
-];
-
-let imageSpecialeHasard =
-"images/Cartes/Speciales/speciales-" +
-numeroSpecialeHasard +
-".PNG";
-
-let containerSpecialeHasard = document.createElement("div");
-containerSpecialeHasard.className = "carte-container";
-
-let flipSpecialeHasard = document.createElement("div");
-flipSpecialeHasard.className = "carte-flip";
-
-let dosSpecialeHasard = document.createElement("img");
-dosSpecialeHasard.src = "images/Dos/dos-speciales.PNG";
-dosSpecialeHasard.className = "carte-face";
-
-let avantSpecialeHasard = document.createElement("img");
-avantSpecialeHasard.src = imageSpecialeHasard;
-avantSpecialeHasard.className = "carte-face carte-face-avant";
-
-flipSpecialeHasard.appendChild(dosSpecialeHasard);
-flipSpecialeHasard.appendChild(avantSpecialeHasard);
-
-containerSpecialeHasard.appendChild(flipSpecialeHasard);
-
-containerSpecialeHasard.onclick = function() {
-
-if (!flipSpecialeHasard.classList.contains("retournee")) {
-
-flipSpecialeHasard.classList.add("retournee");
-
-carteSpecialeHasardRetournee = true;
-imageCarteSpecialeHasardChoisie = imageSpecialeHasard;
-
-}
-
-};
-
-zone.appendChild(containerSpecialeHasard);
-
-}
 
 function retourChoixDepuisHasard() {
 
