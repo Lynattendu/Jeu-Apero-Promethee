@@ -349,7 +349,8 @@ const dosFamilles = {
 "Les Faux Secrets": "Image/Dos/Dos-FS.PNG",
 "Les Habitudes Honteuses": "Image/Dos/Dos-HH.PNG",
 "Les Experts en Amour": "Image/Dos/Dos-EA.PNG",
-"C est Fait": "Image/Dos/Dos-CF.PNG"
+"C est Fait": "Image/Dos/Dos-CF.PNG",
+"Toutes": "Image/Dos/Dos-Toutes.PNG"
 };
 
 
@@ -391,24 +392,9 @@ const zone = document.getElementById("zoneCartes");
 
 zone.innerHTML = "";
 
-const familles = Object.keys(dosFamilles);
+const dos = dosFamilles[familleChoisie];
 
 for (let i = 0; i < 6; i++) {
-
-let dos;
-
-if (familleChoisie === "Toutes") {
-
-const familleAleatoire =
-familles[Math.floor(Math.random() * familles.length)];
-
-dos = dosFamilles[familleAleatoire];
-
-} else {
-
-dos = dosFamilles[familleChoisie];
-
-}
 
 const carte = document.createElement("div");
 
@@ -427,7 +413,6 @@ zone.appendChild(carte);
 }
 
 }
-
 
 
   
