@@ -416,6 +416,8 @@ const dosFamilles = {
 
 
 
+
+
   
 function ouvrirRapide() {
 modeJeu = "rapide";
@@ -452,10 +454,13 @@ function afficherSixCartes() {
 const zone = document.getElementById("zoneCartes");
 zone.innerHTML = "";
 
-// Pour l'instant seules RS et RA sont prêtes
+// Familles actuellement disponibles
 if (
 familleChoisie !== "Rêves Secrets" &&
-familleChoisie !== "Révélateur de l Apéro"
+familleChoisie !== "Révélateur de l Apéro" &&
+familleChoisie !== "Les Pouvoirs Cachés" &&
+familleChoisie !== "Les Faux Secrets" &&
+familleChoisie !== "Les Habitudes Honteuses"
 ) {
 
 zone.innerHTML = `
@@ -506,7 +511,58 @@ fin = 157;
 }
 
 }
+// ----------------------
+// POUVOIRS CACHÉS
+// ----------------------
 
+if (familleChoisie === "Les Pouvoirs Cachés") {
+
+codeFamille = "PC";
+
+if (modeJeu === "rapide") {
+debut = 1;
+fin = 46;
+} else {
+debut = 50;
+fin = 93;
+}
+
+}
+
+ // ----------------------
+// FAUX SECRETS
+// ----------------------
+
+if (familleChoisie === "Les Faux Secrets") {
+
+codeFamille = "FS";
+
+if (modeJeu === "rapide") {
+debut = 1;
+fin = 57;
+} else {
+debut = 60;
+fin = 112;
+}
+
+}
+// ----------------------
+// HABITUDES HONTEUSES
+// ----------------------
+
+if (familleChoisie === "Les Habitudes Honteuses") {
+
+codeFamille = "HH";
+
+if (modeJeu === "rapide") {
+debut = 1;
+fin = 40;
+} else {
+debut = 50;
+fin = 98;
+}
+
+} 
 
 // ----------------------
 // CHOISIR 6 CARTES DIFFÉRENTES
@@ -672,6 +728,8 @@ modeJeu = "";
 familleChoisie = "";
 
 }
+
+  
   
 
 
