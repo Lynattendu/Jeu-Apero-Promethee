@@ -611,7 +611,9 @@ numerosChoisis.push(numero);
 numerosChoisis.forEach(numero => {
 
 const numeroTexte =
-numero.toString().padStart(2, "0");
+codeFamille === "EA"
+? numero.toString().padStart(3, "0")
+: numero.toString().padStart(2, "0");
 
 const devant =
 `image/Famille/${codeFamille}/${codeFamille}-${numeroTexte}.PNG`;
