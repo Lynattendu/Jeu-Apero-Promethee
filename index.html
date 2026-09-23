@@ -460,7 +460,8 @@ familleChoisie !== "Rêves Secrets" &&
 familleChoisie !== "Révélateur de l Apéro" &&
 familleChoisie !== "Les Pouvoirs Cachés" &&
 familleChoisie !== "Les Faux Secrets" &&
-familleChoisie !== "Les Habitudes Honteuses"
+familleChoisie !== "Les Habitudes Honteuses" && 
+familleChoisie !== "Les Experts en Amour"
 ) {
 
 zone.innerHTML = `
@@ -564,6 +565,27 @@ fin = 98;
 
 } 
 
+// ----------------------
+// EXPERTS EN AMOUR
+// ----------------------
+
+if (familleChoisie === "Les Experts en Amour") {
+
+codeFamille = "EA";
+
+if (modeJeu === "rapide") {
+debut = 1;
+fin = 20;
+} else {
+debut = 1;
+fin = 20;
+}
+
+}
+
+
+
+  
 // ----------------------
 // CHOISIR 6 CARTES DIFFÉRENTES
 // ----------------------
